@@ -109,9 +109,9 @@ export default function TimetablePage() {
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <h1 className="text-3xl font-bold">Timetable Management</h1>
-          <div className="flex gap-4">
-            <Select value={selectedCourse} onValueChange={setSelectedCourse}>
-              <SelectTrigger className="w-[180px]">
+          <div className="flex w-full max-sm:flex-col gap-4">
+            <Select value={selectedCourse}  onValueChange={setSelectedCourse}>
+              <SelectTrigger className="w-[180px] max-sm:w-full">
                 <SelectValue placeholder="Select Course" />
               </SelectTrigger>
               <SelectContent>
@@ -121,8 +121,11 @@ export default function TimetablePage() {
                 <SelectItem value="mca">MCA</SelectItem>
               </SelectContent>
             </Select>
-            <Select value={selectedSemester} onValueChange={setSelectedSemester}>
-              <SelectTrigger className="w-[180px]">
+            <Select
+              value={selectedSemester}
+              onValueChange={setSelectedSemester}
+            >
+              <SelectTrigger className="w-[180px] max-sm:w-full">
                 <SelectValue placeholder="Select Semester" />
               </SelectTrigger>
               <SelectContent>
@@ -137,7 +140,7 @@ export default function TimetablePage() {
         </div>
 
         {selectedCourse && selectedSemester && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="flex flex-col gap-2">
             <div className="lg:col-span-2">
               <Card className="p-6">
                 <TimetableGrid
@@ -146,14 +149,16 @@ export default function TimetablePage() {
                 />
               </Card>
             </div>
-            <div className="space-y-6">
-              <Card className="p-6">
-                <TeacherSubjectForm
-                  course={selectedCourse}
-                  semester={selectedSemester}
-                />
-              </Card>
-              <Card className="p-6">
+            <div className="grid md:grid-cols-2 grid-cols-1 gap-10 ">
+              <div>
+                <Card className="p-6 w-full">
+                  <TeacherSubjectForm
+                    course={selectedCourse}
+                    semester={selectedSemester}
+                  />
+                </Card>
+              </div>
+              <Card className="p-6 w-full">
                 <TeacherStats />
               </Card>
             </div>
