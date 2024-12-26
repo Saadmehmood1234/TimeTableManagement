@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -7,24 +6,25 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { div } from "framer-motion/client";
 
-interface TeacherSubjectFormProps {
+interface AddCourseProps {
   course: string;
   semester: string;
 }
 
-export function TeacherSubjectForm({ course, semester }: TeacherSubjectFormProps) {
+export function AddCourse() {
   const { toast } = useToast();
-  const [teacherName, setTeacherName] = useState("");
-  const [subject, setSubject] = useState("");
+  const [courseName, setCourseName] = useState("");
+  const [semester, setSemester] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!teacherName || !subject) {
+    if (!courseName || !semester) {
       toast({
         title: "Error",
-        description: "Teacher name and subject are required",
+        description: "Course  and semester are required",
         variant: "destructive",
       });
       return;
@@ -32,35 +32,33 @@ export function TeacherSubjectForm({ course, semester }: TeacherSubjectFormProps
 
     setIsSubmitting(true);
     try {
-      const response = await fetch("/api/teachers-subjects", {
+      const response = await fetch("/api/course-semester", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          course,
+          courseName,
           semester,
-          teacherName,
-          subject,
         }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to add teacher and subject");
+        throw new Error("Failed to add course and semester");
       }
 
       toast({
         title: "Success",
-        description: "Teacher and subject added successfully",
+        description: "course and semester added successfully",
       });
 
       // Reset form
-      setTeacherName("");
-      setSubject("");
+      setCourseName("");
+      setSemester("");
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to add teacher and subject",
+        description: "Failed to add course and semestew",
         variant: "destructive",
       });
     } finally {
@@ -69,26 +67,26 @@ export function TeacherSubjectForm({ course, semester }: TeacherSubjectFormProps
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="teacherName">Teacher Name</Label>
+        <Label htmlFor="courseName">Course</Label>
         <Input
-          id="teacherName"
-          value={teacherName}
-          onChange={(e) => setTeacherName(e.target.value)}
-          placeholder="Enter teacher name"
+          id="courseName"
+          value={courseName}
+          onChange={(e) => setCourseName(e.target.value)}
+          placeholder="Enter course name"
           required
           disabled={isSubmitting}
         />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="subject">Subject</Label>
+        <Label htmlFor="semester">semester</Label>
         <Input
-          id="subject"
-          value={subject}
-          onChange={(e) => setSubject(e.target.value)}
-          placeholder="Enter subject name"
+          id="semester"
+          value={semester}
+          onChange={(e) => setSemester(e.target.value)}
+          placeholder="Enter semester"
           required
           disabled={isSubmitting}
         />
@@ -96,7 +94,7 @@ export function TeacherSubjectForm({ course, semester }: TeacherSubjectFormProps
 
       <Button type="submit" className="w-full" disabled={isSubmitting}>
         <Plus className="w-4 h-4 mr-2" />
-        {isSubmitting ? "Adding..." : "Add Teacher & Subject"}
+        {isSubmitting ? "Adding..." : "Add course & semester"}
       </Button>
     </form>
   );

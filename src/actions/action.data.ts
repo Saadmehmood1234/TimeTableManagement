@@ -33,3 +33,4 @@ export const deleteSlot = async (course: string, semester: string, day: number, 
     throw new Error(error.message || "Internal server error");
   }
 };
+
