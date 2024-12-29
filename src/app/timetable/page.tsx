@@ -24,7 +24,7 @@ export default function TimetablePage() {
   // Set default values on component mount
   useEffect(() => {
     setSelectedCourse("bca");
-    setSelectedSemester("5"); // Default to Semester 1 for BCA
+    setSelectedSemester("5");  
   }, []);
 
 
@@ -47,6 +47,7 @@ export default function TimetablePage() {
     getData();
   }, []);
   
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 text-black dark:to-gray-800 p-6">
       <div className="max-w-7xl mx-auto space-y-6">
