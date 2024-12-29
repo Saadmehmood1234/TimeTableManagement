@@ -2,7 +2,7 @@ import TeacherCard from "@/components/home/TeacherCard";
 import TimeTableContainer from "@/components/home/TimeTableContainer";
 const HomePage = () => {
   return (
-    <div className="bg-[#F7E3EC] w-full h-screen pt-16 relative">
+    <div className="bg-[#F7E3EC] w-full h-full pt-16 relative">
       <TimeTableContainer />
     
       <div className="w-full flex flex-col gap-2 justify-center items-center ">
