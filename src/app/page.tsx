@@ -14,10 +14,10 @@ const HomePage = () => {
             Meet the passionate educators who are shaping the future, one lesson at a time.
           </p>
         </div>
-        <div className="flex gap-2 flex-wrap w-full justify-center items-center">
+        <div className="flex gap-2 flex-wrap w-full justify-center items-center" id="/#teachers">
           {
             new Array(14).fill(1).map((_,index)=>{
-              return <TeacherCard key={index}/>
+              return <TeacherCard key={index} />
             })
           }
           

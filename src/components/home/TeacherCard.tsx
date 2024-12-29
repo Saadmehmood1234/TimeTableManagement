@@ -9,8 +9,8 @@ const TeacherCard = () => {
         </div>
   
         {/* Teacher Details */}
-        <div className="flex flex-col gap-1 items-center justify-center">
-          <h1 className="text-xl font-semibold text-[#333333]">Amandeep Singh</h1>
+        <div className="flex flex-col gap-1 items-center justify-center w-full ">
+          <h1 className="text-xl font-semibold text-[#333333] truncate">Amandeep Singh</h1>
           <p className="text-sm text-gray-600 font-medium">
             Assistant Professor
           </p>
