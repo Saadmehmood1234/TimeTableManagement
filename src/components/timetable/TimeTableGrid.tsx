@@ -315,7 +315,7 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
         <AddTimeSlot onAdd={handleAddTimeSlot} />
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full border-collapse">
+        <table className="w-full text-center border-collapse">
           <thead>
             <tr>
               <th className="border p-2">Day/Time</th>
