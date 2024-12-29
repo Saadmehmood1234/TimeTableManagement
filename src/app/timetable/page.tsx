@@ -79,7 +79,6 @@
 // }
 
 "use client";
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -93,17 +92,14 @@ import {
 import { TimetableGrid } from "@/components/timetable/TimeTableGrid";
 import { TeacherStats } from "@/components/timetable/TeacherStats";
 import { TeacherSubjectForm } from "@/components/timetable/TeacherSubjectForm";
-
 export default function TimetablePage() {
   const [selectedCourse, setSelectedCourse] = useState<string>("");
   const [selectedSemester, setSelectedSemester] = useState<string>("");
-
   // Set default values on component mount
   useEffect(() => {
     setSelectedCourse("bca");
-    setSelectedSemester("5"); // Default to Semester 1 for BCA
+    setSelectedSemester("5");  
   }, []);
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 text-black dark:to-gray-800 p-6">
       <div className="max-w-7xl mx-auto space-y-6">
