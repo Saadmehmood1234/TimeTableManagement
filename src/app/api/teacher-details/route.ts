@@ -1,63 +1,69 @@
+import { NextResponse } from "next/server";
+import dbConnect from "@/utils/db-connect";
+import Timetable from "@/models/Timetable";
 
-// import { NextResponse } from "next/server";
-// import dbConnect from "@/utils/db-connect";
-// import Timetable from "@/models/Timetable";
-// import Teacher from "@/models/Teacher";
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const teacherName = searchParams.get("teacher");
+    console.log("Received teacher name:", teacherName);
 
-// const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-// const TIME_SLOTS = [
-//   "9:00-10:00",
-//   "10:00-11:00",
-//   "11:00-12:00",
-//   "12:00-1:00",
-//   "2:00-3:00",
-//   "3:00-4:00",
-// ];
+    if (!teacherName) {
+      return NextResponse.json(
+        { error: "Teacher parameter is required" },
+        { status: 400 }
+      );
+    }
 
-// export async function GET(request: Request) {
-//   try {
-//     const { searchParams } = new URL(request.url);
-//     const teacher = searchParams.get("teacher");
+    await dbConnect();
 
-//     if (!teacher ) {
-//       return NextResponse.json(
-//         { error: "Day and time are required" },
-//         { status: 400 }
-//       );
-//     }
+    // Fetch all timetables
+    const timetables = await Timetable.find();
+    if (!timetables || timetables.length === 0) {
+      return NextResponse.json(
+        { error: "No timetables found" },
+        { status: 404 }
+      );
+    }
 
-//     await dbConnect();
+    let teacherData: any[] = [];
 
-//     // // Get all teachers
-//     // const allTeachers = await Teacher.find().select('name');
-//     // const allTeacherNames = allTeachers.map(t => t.name);
+    // Iterate through all timetables to find slots with the teacher's name
+    timetables.forEach((timetable: any) => {
+      timetable.data.forEach((daySlots: any[], dayIndex: number) => {
+        daySlots.forEach((slot: any, slotIndex: number) => {
+          if (slot && slot.teacher === teacherName) {
+            teacherData.push({
+              course: timetable.course,
+              semester: timetable.semester,
+              day: dayIndex, // Index for day (e.g., Monday = 0, Tuesday = 1)
+              timeSlot: slotIndex, // Index for time slot
+              subject: slot.subject,
+              time: { start: slot.start, end: slot.end }, // Add time details
+            });
+          }
+        });
+      });
+    });
 
-//     // Get busy teachers for the specified time slot
-//     const timetables = await Timetable.find();
-//     // const dayIndex = DAYS.indexOf(day);
-//     // const timeIndex = TIME_SLOTS.indexOf(time);
+    console.log("Teacher data:", teacherData);
 
-//     const busyTeachers = new Set(
-//       timetables.flatMap((tt) => {
-//         const cell = tt.data?.[dayIndex]?.[timeIndex];
-//         return cell?.teacher ? [cell.teacher] : [];
-//       })
-//     );
+    if (teacherData.length === 0) {
+      return NextResponse.json(
+        { message: "No data found for the specified teacher" },
+        { status: 404 }
+      );
+    }
 
-//     // Calculate free teachers
-//     const freeTeachers = allTeacherNames.filter(
-//       (teacher) => !busyTeachers.has(teacher)
-//     );
-
-//     return NextResponse.json({
-//       freeTeachers,
-//       busyTeachers: Array.from(busyTeachers),
-//     });
-//   } catch (error) {
-//     console.error("Error fetching teacher availability:", error);
-//     return NextResponse.json(
-//       { error: "Internal server error" },
-//       { status: 500 }
-//     );
-//   }
-// }
+    return NextResponse.json({
+      teacherName,
+      teacherData,
+    });
+  } catch (error) {
+    console.error("Error fetching teacher details:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}

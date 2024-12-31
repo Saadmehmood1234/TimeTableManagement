@@ -1,12 +1,13 @@
-
 import { NextResponse } from "next/server";
 import dbConnect from "@/utils/db-connect";
 import MyTimetable from "@/models/Timetable";
 import { NextRequest } from "next/server";
+import Time from "@/models/Time";
+import { DAYS } from "../../../lib/types";
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    console.log(searchParams)
+    console.log(searchParams);
     const course = searchParams.get("course");
     const semester = searchParams.get("semester");
 
@@ -18,9 +19,9 @@ export async function GET(request: Request) {
     }
 
     await dbConnect();
-    
+
     const timetable = await MyTimetable.findOne({ course, semester });
-    console.log("Get TimeTable:",timetable)
+    console.log("Get TimeTable:", timetable);
 
     return NextResponse.json({ timetable: timetable?.data || [] });
   } catch (error) {
@@ -31,7 +32,6 @@ export async function GET(request: Request) {
     );
   }
 }
-
 
 export async function DELETE(request: NextRequest) {
   try {
@@ -65,21 +65,38 @@ export async function DELETE(request: NextRequest) {
 }
 export async function PUT(request: Request) {
   try {
-    const { course, semester, day, time, teacher, subject } = await request.json();
-
+    const { course, semester, day, time, teacher, subject } =
+      await request.json();
+    const Days = [
+      "monday",
+      "tuesday",
+      "wednesday",
+      "thursday",
+      "friday",
+      "saturday",
+      "sunday",
+    ];
     await dbConnect();
     console.log("Request data:", course, semester, day, time, teacher, subject);
-
+    console.log(time, course, semester, day, teacher, subject);
     // Fetch all timetables that include this teacher in any slot
     const timetables = await MyTimetable.find({});
-
+    const courseTimes = await Time.find();
+    let myTime = courseTimes[0].slots[Number(time)];
+    console.log("All Time", myTime.start);
+    console.log("All Time", myTime.end);
+    let start = myTime.start;
+    let end = myTime.end;
+    let days = Days[Number(day)];
+    console.log("MyData", courseTimes);
     // Count the total number of lectures the teacher has on the specified day
     let totalLecturesOnDay = 0;
     let hasTimeConflict = false;
 
     timetables.forEach((timetable: any) => {
       timetable.data.forEach((dayArray: any, dayIndex: any) => {
-        if (dayIndex === day) { // Check only the specified day index
+        if (dayIndex === day) {
+          // Check only the specified day index
           dayArray.forEach((slot: any, slotIndex: any) => {
             if (slot && slot.teacher === teacher) {
               totalLecturesOnDay++;
@@ -97,14 +114,20 @@ export async function PUT(request: Request) {
 
     if (totalLecturesOnDay >= 5) {
       return NextResponse.json(
-        { error: "Teacher cannot teach more than 5 subjects in a day across all timetables" },
+        {
+          error:
+            "Teacher cannot teach more than 5 subjects in a day across all timetables",
+        },
         { status: 400 }
       );
     }
 
     if (hasTimeConflict) {
       return NextResponse.json(
-        { error: "Teacher is already assigned at this time on the specified day" },
+        {
+          error:
+            "Teacher is already assigned at this time on the specified day",
+        },
         { status: 400 }
       );
     }
@@ -135,9 +158,18 @@ export async function PUT(request: Request) {
     if (!Array.isArray(newData[day])) {
       newData[day] = Array(6).fill(null); // Adjust number of time slots as needed
     }
-    newData[day][time] = { teacher, subject };
-
+    newData[day][time] = {
+      teacher,
+      subject: subject,
+      day: days,
+      start: start,
+      end: end,
+      teacherCourse: course,
+      teacherSemester: semester,
+    };
+    console.log("Updated Date", newData[0][0]);
     timetable.data = newData;
+    console.log("fhewjhfdsf", timetable.data[0][0]);
     await timetable.save();
 
     return NextResponse.json({ success: true });

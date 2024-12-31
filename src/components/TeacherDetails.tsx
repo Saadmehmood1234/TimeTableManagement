@@ -207,7 +207,7 @@ export default function TeacherDetails() {
         <div>{viewAllTeacher && <AllCourse />}</div>
 
         {selectedTeacher !== "All" && timetable && (
-         <TeacherTable teacher={teacher} selectedTeacher={selectedTeacher}/>
+         <TeacherTable  selectedTeacher={selectedTeacher}/>
         )}
       </div>
 

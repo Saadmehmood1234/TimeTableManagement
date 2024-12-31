@@ -62,17 +62,7 @@ export async function POST(request: Request) {
       },
       { upsert: true, new: true }
     );
-
-    // Add subject to course-semester if provided
-    if (course && semester) {
-      await CourseSubject.findOneAndUpdate(
-        { course, semester },
-        {
-          $addToSet: { subjects: subject }
-        },
-        { upsert: true }
-      );
-    }
+console.log("Subject and Teacher",teacher,subject)
 
     return NextResponse.json({
       success: true,

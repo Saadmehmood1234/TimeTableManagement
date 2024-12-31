@@ -7,7 +7,7 @@ const Navbar = () => {
         <h1 className="text-2xl font-semibold drop-shadow-md">DBIT</h1>
       </div>
       <div className="flex justify-center items-center gap-5">
-        <Link href={"/#teachers"}>Teachers</Link>
+        <Link href={"/teacher"}>Teachers</Link>
         <Link href={"/about"}>About</Link>
         <Link href={"/login"}>
         <button className="w-[100px] h-[30px] text-[16px] rounded bg-[#18113d] text-white font-semibold">
