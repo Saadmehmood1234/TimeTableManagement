@@ -9,9 +9,12 @@ const Navbar = () => {
       <div className="flex justify-center items-center gap-5">
         <Link href={"/#teachers"}>Teachers</Link>
         <Link href={"/about"}>About</Link>
+        <Link href={"/login"}>
         <button className="w-[100px] h-[30px] text-[16px] rounded bg-[#18113d] text-white font-semibold">
           Login
         </button>
+        </Link>
+       
       </div>
     </div>
   );
