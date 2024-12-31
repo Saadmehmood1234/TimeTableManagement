@@ -207,37 +207,7 @@ export default function TeacherDetails() {
         <div>{viewAllTeacher && <AllCourse />}</div>
 
         {selectedTeacher !== "All" && timetable && (
-          <div className="flex flex-col gap-2">
-            <div className="lg:col-span-2">
-              <Card className="p-6">
-                <h2 className="text-2xl font-semibold">Timetable for {selectedTeacher}</h2>
-                <div className="mt-4">
-                  <table className="w-full border-collapse">
-                    <thead>
-                      <tr>
-                        <th className="border p-2">Day</th>
-                        <th className="border p-2">Subject</th>
-                        <th className="border p-2">Time</th>
-                        <th className="border p-2">Course</th>
-                        <th className="border p-2">Semester</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {timetable.map((t: any, index: number) => (
-                        <tr key={index}>
-                          <td className="border px-4 py-2">{t.day}</td>
-                          <td className="border px-4 py-2">{t.subject}</td>
-                          <td className="border px-4 py-2">{t.time}</td>
-                          <td className="border px-4 py-2">{t.course}</td>
-                          <td className="border px-4 py-2">{t.semester}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </Card>
-            </div>
-          </div>
+         <TeacherTable teacher={teacher} selectedTeacher={selectedTeacher}/>
         )}
       </div>
 

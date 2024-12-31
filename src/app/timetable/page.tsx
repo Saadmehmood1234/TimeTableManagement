@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import Link from "next/link";
 import {
   Select,
   SelectContent,
@@ -83,7 +84,7 @@ export default function TimetablePage() {
               </SelectContent>
             </Select>
             <div className=" gap-4  flex justify-center text-white items-center  border-gray-300">
-              <Button onClick={()=>setViewAllCourse(!viewAllCourse)}>All Courses</Button>
+              <Link href='/teacher'><Button >All Courses</Button></Link>
               <Button  onClick={() => setViewCourse(!viewCourse)}>
                 Add Course <Plus className="w-4 h-4 mr-2" />
               </Button>
@@ -91,8 +92,6 @@ export default function TimetablePage() {
           </div>
         </div>
         <div>{viewCourse && <AddCourse />}</div>
-        <div>{viewAllCourse && <AllCourse/>}</div>
-
         {selectedCourse && selectedSemester && (
           <div className="flex flex-col gap-2">
             <div className="lg:col-span-2">
