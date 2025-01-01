@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Oleo+Script:wght@400;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -27,6 +28,10 @@ body {
   scrollbar-width: thin; /* Makes scrollbar thin */
   scrollbar-color: #888 #000; /* Thumb color and track color */
 
+}
+
+.animeFont{
+  font-family: "Oleo Script", serif;
 }
 @layer base {
   :root {
