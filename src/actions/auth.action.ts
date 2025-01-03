@@ -2,7 +2,7 @@
 
 import dbConnect from "@/utils/db-connect";
 import {cookies} from "next/headers";
-import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken"
 import adminModel, { AdminType } from "@/models/admin.model";
 const tokenGenerate = async (admin:AdminType)=>{
     const token = await jwt.sign({_id:admin._id},process.env.JWT_SECRET!,{

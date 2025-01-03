@@ -72,6 +72,7 @@ export function AddCourse() {
         <Label htmlFor="courseName">Course</Label>
         <Input
           id="courseName"
+          className="bg-gray-200"
           value={courseName}
           onChange={(e) => setCourseName(e.target.value)}
           placeholder="Enter course name"
@@ -81,9 +82,10 @@ export function AddCourse() {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="semester">semester</Label>
+        <Label htmlFor="semester" >semester</Label>
         <Input
           id="semester"
+          className="bg-gray-200"
           value={semester}
           onChange={(e) => setSemester(e.target.value)}
           placeholder="Enter semester"

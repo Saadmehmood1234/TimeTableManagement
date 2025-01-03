@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import bcrypt from "bcrypt";
 import { Document } from "mongoose";
+import bcrypt from 'bcrypt';
 export interface AdminType  extends Document{
     _id:string;
     email:string;

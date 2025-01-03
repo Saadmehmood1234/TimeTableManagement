@@ -1,4 +1,3 @@
-
 "use client";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -87,7 +86,7 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
 
   const handleTeacherChange = (teacherName: string) => {
     setSelectedTeacher(teacherName);
-    setSelectedSubject(""); 
+    setSelectedSubject("");
   };
 
   const handleDeleteSlot = async (day: number, time: number) => {
@@ -310,13 +309,17 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex justify-end">
+    <div className="space-y-4 bg-gradient-to-tr from-gray-300 to-gray-400 p-2 rounded-sm">
+      <div className="flex justify-between ">
+        <h1 className="text-3xl font-bold text-center text-white">
+          {course.charAt(0).toUpperCase() + course.slice(1).toLowerCase()} -{" "}
+          {semester} Timetable
+        </h1>
         <AddTimeSlot onAdd={handleAddTimeSlot} />
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-center border-collapse">
-          <thead>
+      <div className="overflow-x-auto rounded-lg">
+        <table className="w-full text-center border-collapse ">
+          <thead className="bg-gray-900 text-white">
             <tr>
               <th className="border p-2">Day/Time</th>
               {timeSlots.map((slot, index) => (
@@ -331,7 +334,7 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
               ))}
             </tr>
           </thead>
-          <tbody>
+          <tbody className="bg-gradient-to-tr from-blue-100 via-green-100 to-red-100">
             {DAYS.map((day, dayIndex) => (
               <tr key={day}>
                 <td className="border p-2 font-medium">{day}</td>

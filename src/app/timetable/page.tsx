@@ -56,7 +56,7 @@ export default function TimetablePage() {
           <h1 className="text-3xl font-bold">Timetable Management</h1>
           <div className="flex w-full max-sm:flex-col gap-4">
             <Select value={selectedCourse} onValueChange={setSelectedCourse}>
-              <SelectTrigger className="w-[180px] max-sm:w-full">
+              <SelectTrigger className="w-[180px] max-sm:w-full bg-white text-black">
                 <SelectValue placeholder="Select Course" />
               </SelectTrigger>
               <SelectContent>
@@ -72,7 +72,7 @@ export default function TimetablePage() {
               value={selectedSemester}
               onValueChange={setSelectedSemester}
             >
-              <SelectTrigger className="w-[180px] max-sm:w-full">
+              <SelectTrigger className="w-[180px] max-sm:w-full bg-white text-black">
                 <SelectValue placeholder="Select Semester" />
               </SelectTrigger>
               <SelectContent>
@@ -95,7 +95,7 @@ export default function TimetablePage() {
         {selectedCourse && selectedSemester && (
           <div className="flex flex-col gap-2">
             <div className="lg:col-span-2">
-              <Card className="p-6">
+              <Card className="p-6 bg-cyan-900">
                 <TimetableGrid
                   course={selectedCourse}
                   semester={selectedSemester}

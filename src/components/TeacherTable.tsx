@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 
-// Define the type for the data that you expect in the response
 type TimetableData = {
   day: number; // Ensure `day` is a number (0-6 for Sunday to Saturday)
   subject: string;
@@ -15,7 +14,7 @@ type TeacherData = {
   teacherData: TimetableData[]; // Array of timetable data
 };
 
-const TeacherTable = ({ selectedTeacher }: any) => {
+const TeacherTable = ({ selectedTeacher }: { selectedTeacher: string }) => {
   const [timetable, setTimetable] = useState<TeacherData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,7 +33,7 @@ const TeacherTable = ({ selectedTeacher }: any) => {
   const getTeacherData = async () => {
     try {
       setIsLoading(true);
-      setError(null); // Clear previous error
+      setError(null);
       const response = await fetch(
         `/api/teacher-details?teacher=${selectedTeacher}`
       );
@@ -44,9 +43,9 @@ const TeacherTable = ({ selectedTeacher }: any) => {
       }
 
       const data = await response.json();
-      setTimetable(data); // Assuming response contains `teacherData`
+      setTimetable(data);
     } catch (error: any) {
-      setError(error.message); // Set the error message
+      setError(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -58,9 +57,8 @@ const TeacherTable = ({ selectedTeacher }: any) => {
     }
   }, [selectedTeacher]);
 
-  // Group timetable data by day
   const groupedByDay = timetable?.teacherData.reduce((acc, curr) => {
-    const day = Days[curr.day]; // Get the name of the day from the `day` index
+    const day = Days[curr.day];
     if (!acc[day]) {
       acc[day] = [];
     }
@@ -77,9 +75,10 @@ const TeacherTable = ({ selectedTeacher }: any) => {
 
   return (
     <div className="flex flex-col gap-6 p-6">
-      <Card className="p-8 shadow-lg rounded-lg bg-gradient-to-br from-purple-50 to-blue-100">
+      <Card className="p-8 shadow-lg rounded-lg bg-gradient-to-br from-purple-100 via-blue-50 to-blue-200">
         <h2 className="text-3xl font-bold text-gray-800 mb-6">
-          Timetable for <span className="text-blue-600">{selectedTeacher}</span>
+          Timetable for{" "}
+          <span className="text-blue-600">{selectedTeacher}</span>
         </h2>
         {isLoading ? (
           <div className="text-center text-gray-600">Loading...</div>
