@@ -88,7 +88,6 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
     setSelectedTeacher(teacherName);
     setSelectedSubject("");
   };
-
   const handleDeleteSlot = async (day: number, time: number) => {
     try {
       const response = await fetch("/api/timetable", {
@@ -309,7 +308,7 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
   };
 
   return (
-    <div className="space-y-4 bg-gradient-to-tr from-gray-300 to-gray-400 p-2 rounded-sm">
+    <div className="space-y-4 bg-gradient-to-tr  p-2 rounded-sm">
       <div className="flex justify-between ">
         <h1 className="text-3xl font-bold text-center text-white">
           {course.charAt(0).toUpperCase() + course.slice(1).toLowerCase()} -{" "}
@@ -319,11 +318,11 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
       </div>
       <div className="overflow-x-auto rounded-lg">
         <table className="w-full text-center border-collapse ">
-          <thead className="bg-gray-900 text-white">
+          <thead className="bg-[#4B3F72] text-white">
             <tr>
               <th className="border p-2">Day/Time</th>
               {timeSlots.map((slot, index) => (
-                <th key={index} className="border p-2">
+                <th key={index} className="border p-2 ">
                   <TimeSlotEditor
                     timeSlot={slot}
                     index={index}
@@ -334,12 +333,12 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
               ))}
             </tr>
           </thead>
-          <tbody className="bg-gradient-to-tr from-blue-100 via-green-100 to-red-100">
+          <tbody className="">
             {DAYS.map((day, dayIndex) => (
               <tr key={day}>
                 <td className="border p-2 font-medium">{day}</td>
                 {timeSlots.map((_, timeIndex) => (
-                  <td key={`${day}-${timeIndex}`} className="border p-2">
+                  <td key={`${day}-${timeIndex}`} className="border p-2 bg-white">
                     <TimetableSlot
                       cell={timetable[dayIndex]?.[timeIndex]}
                       isEditing={

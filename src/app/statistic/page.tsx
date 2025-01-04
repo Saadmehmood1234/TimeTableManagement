@@ -14,8 +14,6 @@ const StatisticsPage = () => {
   });
 
   useEffect(() => {
-    // Here you can fetch dynamic data from your API
-    // Example data, replace with actual API call
     setStatisticsData({
       totalTeachers: 10, // Total teachers
       totalClasses: 40,  // Total classes
@@ -39,11 +37,13 @@ const StatisticsPage = () => {
         "Karan Kapoor": 6,
         "Ritu Verma": 5,
         "Mohit Agarwal": 3,
-        // Add more teachers and their class count
     }
     
     });
   }, []);
+
+
+
 
   // Data for Bar Chart (Teacher-wise class distribution)
   const teacherClassData = {

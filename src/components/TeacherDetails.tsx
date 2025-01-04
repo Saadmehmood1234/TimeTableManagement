@@ -9,15 +9,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { AllCourse } from "@/components/AllCourses";
 import TeacherTable from "./TeacherTable";
 export default function TeacherDetails() {
   const [selectedTeacher, setSelectedTeacher] = useState<string>("All");
-  const [viewAllTeacher, setViewAllTeacher] = useState(false);
   const [teacher, setTeacher] = useState<any[]>([]);
   const [timetable, setTimetable] = useState<any | null>(null);
-
-  // Fetch teachers from the API
   const getData = async () => {
     try {
       const response = await fetch("/api/get-teacher");
