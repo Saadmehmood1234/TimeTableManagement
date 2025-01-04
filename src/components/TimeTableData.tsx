@@ -1,7 +1,5 @@
 "use client";
-
 import { TimetableCell, TeacherWithSubjects } from "@/lib/types";
-
 interface TimetableSlotProps {
   cell: TimetableCell | null;
 
@@ -12,7 +10,6 @@ interface TimetableSlotProps {
   onSubjectChange: (subject: string) => void;
   getTeacherSubjects: (teacher: string) => string[];
 }
-
 export function TimetableData({ cell }: TimetableSlotProps) {
   return (
     <div className="min-h-[80px] flex justify-center items-center">

@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/select";
 import { AllCourse } from "@/components/AllCourses";
 import TeacherTable from "./TeacherTable";
-
 export default function TeacherDetails() {
   const [selectedTeacher, setSelectedTeacher] = useState<string>("All");
   const [viewAllTeacher, setViewAllTeacher] = useState(false);
@@ -60,19 +59,19 @@ export default function TeacherDetails() {
   }, [selectedTeacher]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-indigo-50 via-blue-100 to-indigo-200 dark:from-gray-900 dark:to-gray-800 p-6">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div className="min-h-screen">
+      <div className="w-full flex flex-col gap-4 sm:p-10">
         {/* Header Section */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <h1 className="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600">
+        <div className="flex justify-between w-full items-center p-3">
+          <h1 className="text-4xl font-extrabold bg-clip-text ">
             Teacher Details
           </h1>
-          <div className="flex w-full max-sm:flex-col gap-4">
+          <div className="flex  max-sm:flex-col gap-4">
             <Select value={selectedTeacher} onValueChange={setSelectedTeacher}>
-              <SelectTrigger className="w-[200px] max-sm:w-full shadow-md">
+              <SelectTrigger className="w-[200px] max-sm:w-full shadow-md bg-white">
                 <SelectValue placeholder="Select Teacher" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="">
                 <SelectItem value="All">All</SelectItem>
                 {teacher.map((c: any, index: number) => (
                   <SelectItem key={index} value={c.name}>
@@ -81,31 +80,23 @@ export default function TeacherDetails() {
                 ))}
               </SelectContent>
             </Select>
-            <Button
-              onClick={() => setViewAllTeacher(!viewAllTeacher)}
-              className="shadow-md bg-indigo-600 hover:bg-indigo-700 text-white"
-            >
-              View All Teachers
-            </Button>
+            
           </div>
         </div>
 
         {/* Timetable or Teacher Details */}
-        <div className="space-y-6">
-          {viewAllTeacher && <AllCourse />}
-
+        <div className="">
           {selectedTeacher !== "All" && timetable && (
             <TeacherTable selectedTeacher={selectedTeacher}  />
           )}
         </div>
 
-        {/* Table for All Teachers */}
         {selectedTeacher === "All" && (
-          <div className="overflow-x-auto bg-white shadow-md rounded-lg p-6">
-            <table className="w-full border-collapse text-left">
+          <div className="overflow-x-auto bg-white rounded-lg ">
+            <table className="w-full border-collapse text-left gap-3">
               <thead>
-                <tr className="bg-indigo-100">
-                  <th className="border p-4 font-bold">Teacher</th>
+                <tr className="bg-[#4B3F72] text-white">
+                  <th className="border p-4 font-bold ">Teacher</th>
                   <th className="border p-4 font-bold">Subjects</th>
                   <th className="border p-4 font-bold">Actions</th>
                 </tr>
@@ -114,14 +105,14 @@ export default function TeacherDetails() {
                 {teacher.map((tdata: any, index: number) => (
                   <tr key={index} className="hover:bg-indigo-50">
                     <td className="border p-4">{tdata.name}</td>
-                    <td className="border p-4">
-                      <ul className="pl-4 grid grid-cols-2 gap-2">
+                    <td className="border p-4 bg-white rounded">
+                      <div className="flex flex-wrap gap-3">
                         {tdata.subjects.map((subject: string, i: number) => (
-                          <li key={i} className="text-sm bg-indigo-50 px-2 py-1 rounded-md">
+                          <p key={i} className="text-sm bg-indigo-50 px-2 py-1 rounded-md">
                             {subject}
-                          </li>
+                          </p>
                         ))}
-                      </ul>
+                      </div>
                     </td>
                     <td className="border p-4">
                       <Button

@@ -74,11 +74,11 @@ const TeacherTable = ({ selectedTeacher }: { selectedTeacher: string }) => {
   };
 
   return (
-    <div className="flex flex-col gap-6 p-6">
-      <Card className="p-8 shadow-lg rounded-lg bg-gradient-to-br from-purple-100 via-blue-50 to-blue-200">
+    <div className="flex flex-col ">
+      <Card className="p-2 shadow-lg rounded-lg sm:p-4 ">
         <h2 className="text-3xl font-bold text-gray-800 mb-6">
           Timetable for{" "}
-          <span className="text-blue-600">{selectedTeacher}</span>
+          <span className="text-[#4B3F72]">{selectedTeacher}</span>
         </h2>
         {isLoading ? (
           <div className="text-center text-gray-600">Loading...</div>
@@ -104,14 +104,14 @@ const TeacherTable = ({ selectedTeacher }: { selectedTeacher: string }) => {
                   ).map((lesson, lessonIndex) => (
                     <div
                       key={lessonIndex}
-                      className="grid grid-cols-4 gap-4 items-center mt-4 p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow"
+                      className="grid grid-cols-4 gap-4 items-center mt-4 p-4 bg-[#4B3F72] text-white rounded-lg  hover:shadow-lg transition-shadow"
                     >
-                      <div className="text-gray-800">{lesson.subject}</div>
-                      <div className="text-gray-600">
+                      <div >{lesson.subject}</div>
+                      <div >
                         {lesson.time.start} - {lesson.time.end}
                       </div>
-                      <div className="text-gray-600">{lesson.course}</div>
-                      <div className="text-gray-600">{lesson.semester}</div>
+                      <div >{lesson.course}</div>
+                      <div >{lesson.semester}</div>
                     </div>
                   ))}
                   {lessons.length > 1 && (

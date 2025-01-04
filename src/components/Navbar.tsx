@@ -6,7 +6,10 @@ const Navbar = async() => {
   return (
     <div className="w-[90%] bg-[#4B3F72] py-3 px-10 m-auto rounded-md text-white flex justify-between max-sm:text-[15px] max-sm:w-[100%] max-sm:rounded-none max-sm:px-2 ">
       <div>
+        <Link href={"/"}>
         <h1 className="text-2xl font-semibold drop-shadow-md">DBIT</h1>
+        </Link>
+       
       </div>
       <div className="flex justify-center items-center gap-5 max-sm:gap-2 text-[#e2e2e2]">
         <Link href={"/teacher"}>Teachers</Link>
