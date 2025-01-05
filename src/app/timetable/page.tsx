@@ -95,7 +95,7 @@ export default function TimetablePage() {
         {selectedCourse && selectedSemester && (
           <div className="flex flex-col gap-2">
             <div className="lg:col-span-2">
-              <Card className="p-6 bg-cyan-900">
+              <Card className="p-6 bg-[#d6a4af]">
                 <TimetableGrid
                   course={selectedCourse}
                   semester={selectedSemester}

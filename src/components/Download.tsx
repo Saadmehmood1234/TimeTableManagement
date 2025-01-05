@@ -1,10 +1,13 @@
 "use client";
 import { FileDown } from "lucide-react";
-import { useRef } from "react";
 import html2pdf from "html2pdf.js";
-const Download = () => {
-  const timeTableRef = useRef(null);
+import { MutableRefObject } from "react";
 
+interface DownloadProps {
+  timeTableRef: MutableRefObject<HTMLDivElement | null>;
+}
+
+const Download: React.FC<DownloadProps> = ({ timeTableRef }) => {
   const downloadPDF = () => {
     const element = timeTableRef.current;
     if (!element) return;
@@ -25,24 +28,12 @@ const Download = () => {
   };
 
   return (
-    <div>
-      <div ref={timeTableRef}>
-        <div className="flex justify-center gap-10 items-center z-20">
-          <h1 className="text-3xl font-semibold drop-shadow-md animeFont">
-            Weekly TimeTable
-          </h1>
-          <button
-            className="w-[160px] h-[40px] flex justify-center items-center gap-2 font-semibold bg-[#031b4e] text-white rounded-md cursor-pointer"
-            onClick={downloadPDF}
-          >
-            {" "}
-            <FileDown /> <p>Download</p>
-          </button>
-        </div>
-
-       
-      </div>
-    </div>
+    <button
+      className="w-[160px] h-[40px] flex justify-center items-center gap-2 font-semibold bg-[#031b4e] text-white rounded-md cursor-pointer"
+      onClick={downloadPDF}
+    >
+      <FileDown /> <p>Download</p>
+    </button>
   );
 };
 

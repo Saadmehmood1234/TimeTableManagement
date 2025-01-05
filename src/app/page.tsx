@@ -93,7 +93,7 @@ export default function HomePage() {
         {selectedCourse && selectedSemester && (
           <div className="flex flex-col gap-2" >
             <div className="lg:col-span-2">
-              <Card className="bg-cyan-900" ref={timeTableRef}>
+              <Card className="bg-gray-100/80" ref={timeTableRef}>
                 <TimeTableContainer
                   course={selectedCourse}
                   semester={selectedSemester}

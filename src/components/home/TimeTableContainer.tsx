@@ -76,45 +76,62 @@ export function TimeTableContainer({ course, semester }: TimetableGridProps) {
 
   return (
     <div className="p-6 rounded-xl shadow-lg">
-      <h1 className="text-3xl font-bold text-center text-white pb-2">
+      <h1 className="text-3xl font-bold text-center text-black pb-4">
         {course.charAt(0).toUpperCase() + course.slice(1).toLowerCase()} -{" "}
         {semester} Timetable
       </h1>
-
-      <div className="overflow-x-auto shadow-lg rounded-lg bg-white">
-        <table className="min-w-full text-center border-collapse">
-          <thead className="bg-gray-800 text-white">
-            <tr>
-              <th className="p-4 text-lg font-semibold border-r">Day/Time</th>
-              {timeSlots.map((slot, index) => (
-                <th key={index} className="p-4 text-lg font-semibold border-r">
-                  {slot.start} - {slot.end}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="bg-gradient-to-tr from-blue-100 via-green-100 to-red-100">
-            {DAYS.map((day, dayIndex) => (
-              <tr key={day} className="cursor-pointer">
-                <td className="border p-4 font-medium">{day}</td>
-                {timeSlots.map((_, timeIndex) => (
-                  <td key={`${day}-${timeIndex}`} className="border p-4">
-                    <TimetableData
-                      cell={timetable[dayIndex]?.[timeIndex]}
-                      selectedTeacher={selectedTeacher}
-                      selectedSubject={selectedSubject}
-                      teachers={teachers}
-                      onTeacherChange={handleTeacherChange}
-                      onSubjectChange={setSelectedSubject}
-                      getTeacherSubjects={getTeacherSubjects}
-                    />
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="p-5 flex flex-col w-full gap-2 z-20">
+  {/* Header Row */}
+  <div className="flex gap-2 justify-center items-center">
+    <div className="bg-[#AFCDE9] border-2 border-black flex justify-center items-center w-[140px] h-[70px] shadow-md cursor-pointer">
+      <h2 className="font-semibold drop-shadow-md text-xl">Time</h2>
+    </div>
+    {DAYS.map((day) => (
+      <div
+        key={day}
+        className="bg-[#FFA5BA] border-2 border-black flex justify-center items-center w-[180px] h-[70px] shadow-md cursor-pointer"
+      >
+        <h2 className="font-semibold drop-shadow-md text-xl">{day}</h2>
       </div>
+    ))}
+  </div>
+
+  {/* Timetable Rows */}
+  {timeSlots.map((slot, timeIndex) => (
+    <div
+      className="flex gap-2 justify-center items-center"
+      key={timeIndex}
+    >
+      <div className="bg-[#AFCDE9] border-2 border-black flex justify-center rounded items-center w-[140px] h-[70px] shadow-md cursor-pointer">
+        <h2 className="font-semibold drop-shadow-md text-lg">
+          {slot.start} - {slot.end}
+        </h2>
+      </div>
+      {DAYS.map((day, dayIndex) => (
+        <div
+          key={`${day}-${timeIndex}`}
+          className="bg-transparent border-2 border-[#333333] flex justify-center items-center w-[180px] h-[70px] shadow-md cursor-pointer px-2"
+        >
+          <div className="flex flex-col text-center justify-center items-center w-full h-full overflow-hidden">
+            {timetable[dayIndex]?.[timeIndex] ? (
+              <div className="flex flex-col">
+                <span className="text-[14px] mt-2 font-bold capitalize">
+                  {timetable[dayIndex][timeIndex]?.subject}
+                </span>
+                <span className="text-[12px] mb-2 font-medium capitalize">
+                  {timetable[dayIndex][timeIndex]?.teacher}
+                </span>
+              </div>
+            ) : (
+              <p className="text-[15px] font-medium capitalize">No Class</p>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  ))}
+</div>
+
     </div>
   );
 }
@@ -268,4 +285,3 @@ export function TimeTableContainer({ course, semester }: TimetableGridProps) {
 // };
 
 // export default TimeTableContainer;
-

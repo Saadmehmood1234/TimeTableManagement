@@ -1,6 +1,4 @@
-
 "use client";
-
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -105,16 +103,16 @@ export function TimetableSlot({
   return (
     <div className="min-h-[80px] flex justify-center items-center">
       <div
-        className="h-full flex flex-col justify-center items-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800"
+        className="h-full flex flex-col justify-center items-center cursor-pointer "
         onClick={onEdit}
       >
         {cell ? (
           <>
             <p className="font-medium">{cell.teacher}</p>
-            <p className="text-sm text-gray-500">{cell.subject}</p>
+            <p className="text-sm text-gray-900">{cell.subject}</p>
           </>
         ) : (
-         <div className="flex justify-center items-center w-full"> <p className="text-gray-400">No class</p></div>
+         <div className="flex justify-center items-center w-full"> <p className="text-gray-700">No class</p></div>
         )}
       </div>
       {cell && (

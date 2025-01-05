@@ -318,32 +318,32 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
       </div>
       <div className="overflow-x-auto rounded-lg">
         <table className="w-full text-center border-collapse ">
-          <thead className="bg-[#4B3F72] text-white">
+          <thead className="bg-[#4B3F72]  text-white">
             <tr>
-              <th className="border p-2">Day/Time</th>
-              {timeSlots.map((slot, index) => (
-                <th key={index} className="border p-2 ">
-                  <TimeSlotEditor
-                    timeSlot={slot}
-                    index={index}
-                    onSave={handleTimeSlotSave}
-                    onDelete={handleDeleteTimeSlot}
-                  />
+              <th className="border p-2">Time/Day</th>
+              {DAYS.map((day, index) => (
+                <th key={index} className="border py-8 ">
+                  {day}
                 </th>
               ))}
             </tr>
           </thead>
           <tbody className="">
-            {DAYS.map((day, dayIndex) => (
-              <tr key={day}>
-                <td className="border p-2 font-medium">{day}</td>
-                {timeSlots.map((_, timeIndex) => (
-                  <td key={`${day}-${timeIndex}`} className="border p-2 bg-white">
+            {timeSlots.map((slot, timeIndex) => (
+              <tr key={timeIndex}>
+                <td className="border p-2 font-medium bg-[#4B3F72] text-white">           
+                  <TimeSlotEditor
+                    timeSlot={slot}
+                    index={timeIndex}
+                    onSave={handleTimeSlotSave}
+                    onDelete={handleDeleteTimeSlot}
+                  /></td>
+                {DAYS.map((_, dayIndex) => (
+                  <td key={`${dayIndex}-${timeIndex}`} className="border p-2 bg-gray-300">
                     <TimetableSlot
                       cell={timetable[dayIndex]?.[timeIndex]}
                       isEditing={
-                        editingCell?.day === dayIndex &&
-                        editingCell?.time === timeIndex
+                        editingCell?.day === dayIndex && editingCell?.time === timeIndex
                       }
                       onEdit={() => handleCellEdit(dayIndex, timeIndex)}
                       onDelete={() => handleDeleteSlot(dayIndex, timeIndex)}
