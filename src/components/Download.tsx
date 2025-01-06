@@ -1,12 +1,21 @@
+"use client";
+
 import { FileDown } from "lucide-react";
 import html2pdf from "html2pdf.js";
-import { MutableRefObject } from "react";
+import { MutableRefObject, useEffect, useState } from "react";
 
 interface DownloadProps {
   timeTableRef: MutableRefObject<HTMLDivElement | null>;
 }
 
 const Download: React.FC<DownloadProps> = ({ timeTableRef }) => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    // This will set isClient to true once the component is mounted on the client side
+    setIsClient(true);
+  }, []);
+
   const downloadPDF = () => {
     const element = timeTableRef.current;
     if (!element) return;
@@ -25,6 +34,11 @@ const Download: React.FC<DownloadProps> = ({ timeTableRef }) => {
       .set(options) // Apply settings
       .save(); // Download the PDF
   };
+
+  if (!isClient) {
+    // Prevent rendering the button until client-side rendering is done
+    return null;
+  }
 
   return (
     <button
