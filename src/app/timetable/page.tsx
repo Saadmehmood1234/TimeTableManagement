@@ -82,8 +82,8 @@ export default function TimetablePage() {
               </SelectContent>
             </Select>
             <div className=" gap-4  flex justify-center text-white items-center  border-gray-300">
-              <Link href='/teacher'><Button >All Courses</Button></Link>
-              <Button  onClick={() => setViewCourse(!viewCourse)}>
+              {/* <Link href='/teacher'><Button className="bg-[#4B3F72]">All Courses</Button></Link> */}
+              <Button className="bg-[#4B3F72] hover:bg-[#7160a7]"  onClick={() => setViewCourse(!viewCourse)}>
                 Add Course <Plus className="w-4 h-4 mr-2" />
               </Button>
             </div>

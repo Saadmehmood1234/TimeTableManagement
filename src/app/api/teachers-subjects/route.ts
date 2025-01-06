@@ -1,4 +1,3 @@
-
 import { NextResponse } from "next/server";
 import dbConnect from "@/utils/db-connect";
 import Teacher from "@/models/Teacher";
@@ -20,15 +19,15 @@ export async function GET(request: Request) {
     await dbConnect();
 
     // Get all teachers with their subjects
-    const teachers = await Teacher.find().select('name subjects');
-    
+    const teachers = await Teacher.find().select("name subjects");
+
     // Get subjects for the specific course and semester
     const courseSubjects = await CourseSubject.findOne({ course, semester });
 
     return NextResponse.json({
-      teachers: teachers.map(t => ({
+      teachers: teachers.map((t) => ({
         name: t.name,
-        subjects: t.subjects || []
+        subjects: t.subjects || [],
       })),
       courseSubjects: courseSubjects?.subjects || [],
     });
@@ -43,7 +42,8 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const { course, semester, teacherName, subject } = await request.json();
+    const { course, semester, designation, teacherName, subject } =
+      await request.json();
 
     if (!teacherName || !subject) {
       return NextResponse.json(
@@ -56,17 +56,16 @@ export async function POST(request: Request) {
 
     // Add or update teacher
     const teacher = await Teacher.findOneAndUpdate(
-      { name: teacherName },
-      { 
-        $addToSet: { subjects: subject }
+      { name: teacherName, designation: designation },
+      {
+        $addToSet: { subjects: subject },
       },
       { upsert: true, new: true }
     );
-console.log("Subject and Teacher",teacher,subject)
 
     return NextResponse.json({
       success: true,
-      data: teacher
+      data: teacher,
     });
   } catch (error) {
     console.error("Error adding teacher and subject:", error);

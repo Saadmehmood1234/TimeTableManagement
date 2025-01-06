@@ -55,7 +55,7 @@ export function TimetableSlot({
     return (
       <div className="space-y-2">
         <Select value={selectedTeacher} onValueChange={onTeacherChange}>
-          <SelectTrigger>
+          <SelectTrigger className="bg-white">
             <SelectValue placeholder="Select Teacher" />
           </SelectTrigger>
           <SelectContent>
@@ -69,7 +69,7 @@ export function TimetableSlot({
 
         {selectedTeacher && (
           <Select value={selectedSubject} onValueChange={onSubjectChange}>
-            <SelectTrigger>
+            <SelectTrigger className="bg-white">
               <SelectValue placeholder="Select Subject" />
             </SelectTrigger>
             <SelectContent>
@@ -91,6 +91,7 @@ export function TimetableSlot({
           <Button
             size="sm"
             onClick={onSave}
+            className="bg-[#4B3F72] hover:bg-[#7160a7]"
             disabled={!selectedTeacher || !selectedSubject}
           >
             <Save className="h-4 w-4" />
@@ -125,7 +126,7 @@ export function TimetableSlot({
               className=" h-6 w-6"
               onClick={(e) => e.stopPropagation()} // Prevent onEdit trigger
             >
-              <Trash2 className="text-black h-4 w-4 " />
+              <Trash2 className=" text-[#4B3F72] hover:text-[#7160a7] h-4 w-4 " />
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
@@ -139,7 +140,7 @@ export function TimetableSlot({
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
               {/* Confirm delete action */}
-              <AlertDialogAction onClick={onDelete}>Delete</AlertDialogAction>
+              <AlertDialogAction onClick={onDelete} className="bg-[#4B3F72] hover:bg-[#7160a7]">Delete</AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

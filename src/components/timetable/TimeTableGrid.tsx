@@ -342,7 +342,7 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
                 {DAYS.map((_, dayIndex) => (
                   <td
                     key={`${dayIndex}-${timeIndex}`}
-                    className="border p-2 bg-gray-300"
+                    className="border p-2 bg-gray-100 border-black"
                   >
                     <TimetableSlot
                       cell={timetable[dayIndex]?.[timeIndex]}

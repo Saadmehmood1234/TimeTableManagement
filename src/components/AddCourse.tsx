@@ -72,7 +72,7 @@ export function AddCourse() {
         <Label htmlFor="courseName">Course</Label>
         <Input
           id="courseName"
-          className="bg-gray-200"
+          className="bg-white"
           value={courseName}
           onChange={(e) => setCourseName(e.target.value)}
           placeholder="Enter course name"
@@ -85,7 +85,7 @@ export function AddCourse() {
         <Label htmlFor="semester" >semester</Label>
         <Input
           id="semester"
-          className="bg-gray-200"
+          className="bg-white"
           value={semester}
           onChange={(e) => setSemester(e.target.value)}
           placeholder="Enter semester"
@@ -94,7 +94,7 @@ export function AddCourse() {
         />
       </div>
 
-      <Button type="submit" className="w-full" disabled={isSubmitting}>
+      <Button type="submit" className="w-full bg-[#4B3F72] hover:bg-[#7160a7]" disabled={isSubmitting}>
         <Plus className="w-4 h-4 mr-2" />
         {isSubmitting ? "Adding..." : "Add course & semester"}
       </Button>

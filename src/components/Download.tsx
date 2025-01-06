@@ -1,41 +1,31 @@
-"use client"; // Make sure the component only runs on the client-side
-
+"use client";
 import { FileDown } from "lucide-react";
 import html2pdf from "html2pdf.js";
-import { MutableRefObject, useEffect, useState } from "react";
+import { MutableRefObject } from "react";
 
 interface DownloadProps {
   timeTableRef: MutableRefObject<HTMLDivElement | null>;
 }
 
 const Download: React.FC<DownloadProps> = ({ timeTableRef }) => {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true); // After mount, the component will be rendered
-  }, []);
-
   const downloadPDF = () => {
     const element = timeTableRef.current;
     if (!element) return;
 
     const options = {
-      margin: [10, 10, 10, 10],
+      margin: [10, 10, 10, 10], // Set margin if needed
       filename: "timetable.pdf",
       image: { type: "png", quality: 1 },
-      html2canvas: { scale: 2 },
+      html2canvas: { scale: 2 }, // Increase scale for better quality
       jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
     };
 
+    // Use html2pdf to convert HTML content to PDF
     html2pdf()
-      .from(element)
-      .set(options)
-      .save();
+      .from(element) // Convert the content from the ref
+      .set(options) // Apply settings
+      .save(); // Download the PDF
   };
-
-  if (!isClient) {
-    return null; // Ensure it's not rendered server-side
-  }
 
   return (
     <button

@@ -7,8 +7,11 @@ const teacherSchema = new mongoose.Schema({
     unique: true,
   },
   subjects: [{
-    type: String,
+    type: String, // You can switch this to ObjectId if you're referencing other collections
   }],
+  designation: {
+    type: String,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -19,9 +22,15 @@ const teacherSchema = new mongoose.Schema({
   },
 });
 
-// Update the updatedAt timestamp on save
+// Update the updatedAt timestamp on save or update
 teacherSchema.pre('save', function(next) {
   this.updatedAt = new Date();
+  next();
+});
+
+// Ensure `updatedAt` is also updated when the document is modified
+teacherSchema.pre('findOneAndUpdate', function(next) {
+  this.set({ updatedAt: new Date() });
   next();
 });
 

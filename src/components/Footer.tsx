@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <div className="bg-[#2D1F6C] text-white py-8 mt-10 p-9 max-sm:p-5">
+    <div className="bg-[#4B3F72] text-white py-8 mt-10 p-9 max-sm:p-5">
       <div className="w-full max-w-[1200px] m-auto flex flex-col gap-8">
         {/* Top Section - College Info and Links */}
         <div className="flex flex-wrap justify-between gap-8">

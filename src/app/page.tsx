@@ -30,7 +30,7 @@
 //     try {
 //       const response = await fetch("/api/get-course");
 //       if (response.ok) {
-  
+
 //       const courseData = await response.json();
 //       console.log(courseData);
 //       console.log(courseData.data[0].course);
@@ -45,8 +45,6 @@
 //     getData();
 //   }, []);
 
-
-  
 //   return (
 //     <div className="min-h-screen  p-6">
 //       <div className="max-w-7xl mx-auto space-y-6">
@@ -85,11 +83,11 @@
 //               </SelectContent>
 //             </Select>
 //           </div>
-         
+
 //         </div>
 //         <Download timeTableRef={timeTableRef}/>
 //        </div>
-       
+
 //         {selectedCourse && selectedSemester && (
 //           <div className="flex flex-col gap-2" >
 //             <div className="lg:col-span-2">
@@ -125,8 +123,6 @@
 //   );
 // }
 
-
-
 // // import TeacherCard from "@/components/home/TeacherCard";
 // // import TimeTableContainer from "@/components/home/TimeTableContainer";
 // // const HomePage = () => {
@@ -148,7 +144,7 @@
 // //               return <TeacherCard key={index} />
 // //             })
 // //           }
-          
+
 // //         </div>
 // //       </div>
 // //     </div>
@@ -175,6 +171,7 @@ export default function HomePage() {
   const [selectedCourse, setSelectedCourse] = useState<string>("bca");
   const [selectedSemester, setSelectedSemester] = useState<string>("5");
   const [courses, setCourses] = useState<{ course: string }[]>([]);
+  const [teachers, setTeachers] = useState<{ teacher: string }[]>([]);
   const timeTableRef = useRef<HTMLDivElement | null>(null);
 
   // Fetch course data
@@ -194,7 +191,25 @@ export default function HomePage() {
   useEffect(() => {
     getCourses();
   }, []);
+  const getTeachers = async () => {
+    try {
+      const response = await fetch("/api/get-teacher");
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+      const teacherData = await response.json();
+      console.log("My teacher data", teacherData.data);
+      setTeachers(teacherData.data || []);
+    } catch (error) {
+      console.error("Error fetching course data:", error);
+    }
+  };
 
+  useEffect(() => {
+    getTeachers();
+  }, []);
+  console.log("Wjahdfkdjf", teachers);
+  console.log("Wfhkjsdfjkdjahdfkdjf", courses);
   return (
     <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto space-y-6">
@@ -240,8 +255,11 @@ export default function HomePage() {
 
         {/* Timetable Section */}
         {selectedCourse && selectedSemester && (
-          <div className="flex flex-col gap-2">
-            <Card className="bg-gray-100/80" ref={timeTableRef}>
+          <div className="flex flex-col gap-2 ">
+            <Card
+              className="bg-gray-100/80 overflow-x-auto w-full"
+              ref={timeTableRef}
+            >
               <TimeTableContainer
                 course={selectedCourse}
                 semester={selectedSemester}
@@ -265,8 +283,12 @@ export default function HomePage() {
           className="flex gap-2 flex-wrap w-full justify-center items-center"
           id="/teachers"
         >
-          {new Array(14).fill(1).map((_, index) => (
-            <TeacherCard key={index} />
+          {teachers.map((teacher: any, index) => (
+            <TeacherCard
+              key={index}
+              teacher={teacher.name}
+              designation={teacher.designation}
+            />
           ))}
         </div>
       </div>

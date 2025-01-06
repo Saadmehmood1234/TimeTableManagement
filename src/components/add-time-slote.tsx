@@ -58,7 +58,7 @@ export function AddTimeSlot({ onAdd }: AddTimeSlotProps) {
               />
             </div>
           </div>
-          <Button onClick={handleAdd} className="w-full">
+          <Button onClick={handleAdd} className="w-full bg-[#4B3F72] hover:bg-[#7160a7]">
             Add Time Slot
           </Button>
         </div>

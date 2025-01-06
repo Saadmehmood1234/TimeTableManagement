@@ -53,21 +53,21 @@ export function TimeSlotEditor({
           type="time"
           value={start}
           onChange={(e) => setStart(e.target.value)}
-          className="w-24"
+          className="w-24 bg-white text-black"
         />
         <span>-</span>
         <Input
           type="time"
           value={end}
           onChange={(e) => setEnd(e.target.value)}
-          className="w-24"
+          className="w-24 bg-white text-black"
         />
         <div className="flex gap-1">
-          <Button size="icon" variant="ghost" onClick={() => setIsEditing(false)}>
-            <X className="h-4 w-4" />
+          <Button size="icon" className="hover:bg-gray-300 bg-white" variant="ghost" onClick={() => setIsEditing(false)}>
+            <X className="h-4 w-4 text-[#4B3F72] hover:bg-[#695a9c]" />
           </Button>
-          <Button size="icon" onClick={handleSave}>
-            <Save className="h-4 w-4" />
+          <Button size="icon" className="hover:bg-gray-300 bg-white" onClick={handleSave}>
+            <Save className="h-4 w-4 text-[#4B3F72] hover:bg-[#695a9c]" />
           </Button>
         </div>
       </div>
@@ -80,14 +80,14 @@ export function TimeSlotEditor({
         {timeSlot.start} - {timeSlot.end}
       </div>
       <div className="flex gap-1 justify-evenly w-full">
-        <Button variant="ghost" className="p-0" onClick={() => setIsEditing(true)}>
+        <Button variant="ghost" className="p-0 hover:bg-[#4B3F72]" onClick={() => setIsEditing(true)}>
           <Edit2 className="h-4 w-4" />
         </Button>
 
         {/* Alert Dialog for delete confirmation */}
         <AlertDialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <AlertDialogTrigger asChild>
-            <Button variant="ghost" className="p-0" onClick={() => setIsModalOpen(true)}>
+            <Button variant="ghost" className="p-0 hover:bg-[#4B3F72]" onClick={() => setIsModalOpen(true)}>
               <Trash className="h-4 w-4" />
             </Button>
           </AlertDialogTrigger>
@@ -103,7 +103,7 @@ export function TimeSlotEditor({
               <AlertDialogCancel onClick={() => setIsModalOpen(false)}>
                 Cancel
               </AlertDialogCancel>
-              <AlertDialogAction onClick={handleDelete}>
+              <AlertDialogAction className="hover:bg-[#695a9c] bg-[#4B3F72]" onClick={handleDelete}>
                 Confirm
               </AlertDialogAction>
             </AlertDialogFooter>
