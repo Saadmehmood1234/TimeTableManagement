@@ -1,4 +1,3 @@
-"use client";
 import { FileDown } from "lucide-react";
 import html2pdf from "html2pdf.js";
 import { MutableRefObject } from "react";

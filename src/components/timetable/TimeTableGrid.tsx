@@ -331,19 +331,24 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
           <tbody className="">
             {timeSlots.map((slot, timeIndex) => (
               <tr key={timeIndex}>
-                <td className="border p-2 font-medium bg-[#4B3F72] text-white">           
+                <td className="border p-2 font-medium bg-[#4B3F72] text-white">
                   <TimeSlotEditor
                     timeSlot={slot}
                     index={timeIndex}
                     onSave={handleTimeSlotSave}
                     onDelete={handleDeleteTimeSlot}
-                  /></td>
+                  />
+                </td>
                 {DAYS.map((_, dayIndex) => (
-                  <td key={`${dayIndex}-${timeIndex}`} className="border p-2 bg-gray-300">
+                  <td
+                    key={`${dayIndex}-${timeIndex}`}
+                    className="border p-2 bg-gray-300"
+                  >
                     <TimetableSlot
                       cell={timetable[dayIndex]?.[timeIndex]}
                       isEditing={
-                        editingCell?.day === dayIndex && editingCell?.time === timeIndex
+                        editingCell?.day === dayIndex &&
+                        editingCell?.time === timeIndex
                       }
                       onEdit={() => handleCellEdit(dayIndex, timeIndex)}
                       onDelete={() => handleDeleteSlot(dayIndex, timeIndex)}
