@@ -12,7 +12,6 @@ const Download: React.FC<DownloadProps> = ({ timeTableRef }) => {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    // This will set isClient to true once the component is mounted on the client side
     setIsClient(true);
   }, []);
 
@@ -21,23 +20,21 @@ const Download: React.FC<DownloadProps> = ({ timeTableRef }) => {
     if (!element) return;
 
     const options = {
-      margin: [10, 10, 10, 10], // Set margin if needed
+      margin: [10, 10, 10, 10],
       filename: "timetable.pdf",
       image: { type: "png", quality: 1 },
-      html2canvas: { scale: 2 }, // Increase scale for better quality
+      html2canvas: { scale: 2 },
       jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
     };
 
-    // Use html2pdf to convert HTML content to PDF
     html2pdf()
-      .from(element) // Convert the content from the ref
-      .set(options) // Apply settings
-      .save(); // Download the PDF
+      .from(element)
+      .set(options)
+      .save();
   };
 
   if (!isClient) {
-    // Prevent rendering the button until client-side rendering is done
-    return null;
+    return null; // Prevent rendering on the server-side
   }
 
   return (
