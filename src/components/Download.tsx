@@ -1,4 +1,4 @@
-"use client";
+"use client"; // Make sure the component only runs on the client-side
 
 import { FileDown } from "lucide-react";
 import html2pdf from "html2pdf.js";
@@ -12,7 +12,7 @@ const Download: React.FC<DownloadProps> = ({ timeTableRef }) => {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
+    setIsClient(true); // After mount, the component will be rendered
   }, []);
 
   const downloadPDF = () => {
@@ -34,7 +34,7 @@ const Download: React.FC<DownloadProps> = ({ timeTableRef }) => {
   };
 
   if (!isClient) {
-    return null; // Prevent rendering on the server-side
+    return null; // Ensure it's not rendered server-side
   }
 
   return (
