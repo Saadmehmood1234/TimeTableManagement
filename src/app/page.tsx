@@ -160,7 +160,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Card } from "@/components/ui/card";
-import Download from "@/components/Download";
+// import Download from "@/components/Download";
 import {
   Select,
   SelectContent,
@@ -235,7 +235,7 @@ export default function HomePage() {
               </Select>
             </div>
           </div>
-          <Download timeTableRef={timeTableRef} />
+          {/* <Download timeTableRef={timeTableRef} /> */}
         </div>
 
         {/* Timetable Section */}

@@ -15,12 +15,10 @@ import { TimetableGrid } from "@/components/timetable/TimeTableGrid";
 import { TeacherStats } from "@/components/timetable/TeacherStats";
 import { TeacherSubjectForm } from "@/components/timetable/TeacherSubjectForm";
 import { AddCourse } from "@/components/AddCourse";
-import { AllCourse } from "@/components/AllCourses";
 export default function TimetablePage() {
   const [selectedCourse, setSelectedCourse] = useState<string>("");
   const [selectedSemester, setSelectedSemester] = useState<string>("");
   const [viewCourse, setViewCourse] = useState(false);
-  const [viewAllCourse, setViewAllCourse] = useState(false);
   const [course, setCourse] = useState([]);
   // Set default values on component mount
   useEffect(() => {

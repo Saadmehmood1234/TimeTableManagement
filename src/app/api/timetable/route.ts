@@ -3,7 +3,6 @@ import dbConnect from "@/utils/db-connect";
 import MyTimetable from "@/models/Timetable";
 import { NextRequest } from "next/server";
 import Time from "@/models/Time";
-import { DAYS } from "../../../lib/types";
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
