@@ -1,5 +1,4 @@
 const TeacherCard = ({ teacher, designation }: any) => {
-  // Get the first letter of the teacher's name and capitalize it
   const firstLetter = teacher.charAt(0).toUpperCase();
 
   return (
