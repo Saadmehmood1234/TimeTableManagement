@@ -157,6 +157,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import Download from "@/components/Download";
+
 import {
   Select,
   SelectContent,
@@ -166,8 +167,9 @@ import {
 } from "@/components/ui/select";
 import { TimeTableContainer } from "@/components/home/TimeTableContainer";
 import TeacherCard from "@/components/home/TeacherCard";
+import dynamic from "next/dynamic";
 
-export default function HomePage() {
+ function HomePage() {
   const [selectedCourse, setSelectedCourse] = useState<string>("bca");
   const [selectedSemester, setSelectedSemester] = useState<string>("5");
   const [courses, setCourses] = useState<{ course: string }[]>([]);
@@ -255,17 +257,13 @@ export default function HomePage() {
 
         {/* Timetable Section */}
         {selectedCourse && selectedSemester && (
-          <div className="flex flex-col gap-2 ">
-            <Card
-              className="bg-gray-100/80 overflow-x-auto w-full"
-              ref={timeTableRef}
-            >
+          <div ref={timeTableRef}>
               <TimeTableContainer
-                course={selectedCourse}
-                semester={selectedSemester}
-              />
-            </Card>
-          </div>
+           course={selectedCourse}
+           semester={selectedSemester}
+         />
+            </div>
+         
         )}
       </div>
 
@@ -295,3 +293,7 @@ export default function HomePage() {
     </div>
   );
 }
+
+export default dynamic(() => Promise.resolve(HomePage), {
+  ssr: false,
+});

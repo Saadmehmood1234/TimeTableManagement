@@ -21,7 +21,6 @@ export function TimeTableContainer({ course, semester }: TimetableGridProps) {
   const [teachers, setTeachers] = useState<TeacherWithSubjects[]>([]);
   const [selectedTeacher, setSelectedTeacher] = useState<string>("");
   const [selectedSubject, setSelectedSubject] = useState<string>("");
-
   useEffect(() => {
     fetchTimetableData();
     fetchTeachersAndSubjects();
@@ -75,44 +74,43 @@ export function TimeTableContainer({ course, semester }: TimetableGridProps) {
   };
 
   return (
-    <div className="p-6 rounded-xl shadow-lg">
+    <div className="p-2   w-full ">
     <h1 className="text-3xl font-bold text-center text-black pb-4">
       {course.charAt(0).toUpperCase() + course.slice(1).toLowerCase()} -{" "}
       {semester} Timetable
     </h1>
-    <div className="p-5 flex flex-col gap-2 z-20">
-      {/* Wrapper to allow horizontal scrolling */}
-      <div className="overflow-x-auto w-full">
+    <div className="flex flex-col justify-center w-full  gap-2 z-20  overflow-x-auto">
+
+      <div className="w-full flex flex-col justify-center sm:items-center  gap-2">
         {/* Header Row */}
-        <div className="grid grid-cols-6 gap-2 items-center text-center min-w-max">
-          <div className="bg-[#AFCDE9] border-2 border-black flex justify-center items-center h-[70px] shadow-md cursor-pointer">
-            <h2 className="font-semibold drop-shadow-md text-xl">Time</h2>
+        <div className="w-full flex gap-2 items-center sm:justify-center ">
+          <div className="bg-[#AFCDE9] border-2 border-black flex justify-center items-center h-[70px] min-w-[150px] shadow-md rounded cursor-pointer">
+            <h2 className="font-semibold drop-shadow-md rounded text-xl">Time</h2>
           </div>
           {DAYS.map((day) => (
             <div
               key={day}
-              className="bg-[#FFA5BA] border-2 border-black flex justify-center items-center h-[70px] shadow-md cursor-pointer"
+              className="bg-[#FFA5BA] border-2 border-black flex justify-center items-center h-[70px] min-w-[150px]  shadow-md rounded cursor-pointer"
             >
-              <h2 className="font-semibold drop-shadow-md text-xl">{day}</h2>
+              <h2 className="font-semibold drop-shadow-md rounded text-xl">{day}</h2>
             </div>
           ))}
         </div>
   
-        {/* Timetable Rows */}
         {timeSlots.map((slot, timeIndex) => (
           <div
-            className="grid grid-cols-6 gap-2 items-center text-center min-w-max"
+            className="flex gap-2 items-center text-center"
             key={timeIndex}
           >
-            <div className="bg-[#AFCDE9] border-2 border-black flex justify-center rounded items-center h-[70px] shadow-md cursor-pointer">
-              <h2 className="font-semibold drop-shadow-md text-lg">
+            <div className="bg-[#AFCDE9] border-2 border-black flex justify-center  items-center h-[70px] min-w-[150px] shadow-md rounded cursor-pointer">
+              <h2 className="font-semibold drop-shadow-md rounded text-lg">
                 {slot.start} - {slot.end}
               </h2>
             </div>
             {DAYS.map((day, dayIndex) => (
               <div
                 key={`${day}-${timeIndex}`}
-                className="bg-transparent border-2 border-[#333333] flex justify-center items-center h-[70px] shadow-md cursor-pointer px-2"
+                className="bg-transparent border-2 border-[#333333] flex justify-center items-center h-[70px] min-w-[150px] shadow-md rounded cursor-pointer px-2"
               >
                 <div className="flex flex-col text-center justify-center items-center w-full h-full overflow-hidden">
                   {timetable[dayIndex]?.[timeIndex] ? (
@@ -169,7 +167,7 @@ export function TimeTableContainer({ course, semester }: TimetableGridProps) {
 //     <div>
 //       <div ref={timeTableRef} className="bg-[#F7E3EC]">
 //         <div className="w-full flex justify-center gap-10 items-center z-20">
-//           <h1 className="text-3xl font-semibold drop-shadow-md animeFont">
+//           <h1 className="text-3xl font-semibold drop-shadow-md rounded animeFont">
 //           Weekly TimeTable
 //           </h1>
 //           <button
@@ -183,38 +181,38 @@ export function TimeTableContainer({ course, semester }: TimetableGridProps) {
 
 //         <div className=" p-5 flex flex-col w-full  gap-2 z-20">
 //           <div className="flex gap-2 justify-center items-center">
-//             <div className="bg-[#AFCDE9] border-2 border-black flex justify-center items-center w-[140px] h-[70px] shadow-md cursor-pointer">
-//               <h2 className="font-semibold drop-shadow-md text-xl">Time</h2>
+//             <div className="bg-[#AFCDE9] border-2 border-black flex justify-center items-center w-[140px] h-[70px] shadow-md rounded cursor-pointer">
+//               <h2 className="font-semibold drop-shadow-md rounded text-xl">Time</h2>
 //             </div>
-//             <div className="bg-[#FFA5BA] border-2 border-black flex justify-center items-center  w-[140px] h-[70px] shadow-md cursor-pointer">
-//               <h2 className="font-semibold drop-shadow-md text-2xl">Monday</h2>
+//             <div className="bg-[#FFA5BA] border-2 border-black flex justify-center items-center  w-[140px] h-[70px] shadow-md rounded cursor-pointer">
+//               <h2 className="font-semibold drop-shadow-md rounded text-2xl">Monday</h2>
 //             </div>
-//             <div className="bg-[#FFA5BA] border-2 border-black flex justify-center items-center  w-[140px] h-[70px] shadow-md cursor-pointer">
-//               <h2 className="font-semibold drop-shadow-md text-2xl">Tuesday</h2>
+//             <div className="bg-[#FFA5BA] border-2 border-black flex justify-center items-center  w-[140px] h-[70px] shadow-md rounded cursor-pointer">
+//               <h2 className="font-semibold drop-shadow-md rounded text-2xl">Tuesday</h2>
 //             </div>
-//             <div className="bg-[#FFA5BA] border-2 border-black flex justify-center items-center  w-[140px] h-[70px] shadow-md cursor-pointer">
-//               <h2 className="font-semibold drop-shadow-md text-2xl">
+//             <div className="bg-[#FFA5BA] border-2 border-black flex justify-center items-center  w-[140px] h-[70px] shadow-md rounded cursor-pointer">
+//               <h2 className="font-semibold drop-shadow-md rounded text-2xl">
 //                 Wednesday
 //               </h2>
 //             </div>
-//             <div className="bg-[#FFA5BA] border-2 border-black flex justify-center items-center  w-[140px] h-[70px] shadow-md cursor-pointer">
-//               <h2 className="font-semibold drop-shadow-md text-2xl">
+//             <div className="bg-[#FFA5BA] border-2 border-black flex justify-center items-center  w-[140px] h-[70px] shadow-md rounded cursor-pointer">
+//               <h2 className="font-semibold drop-shadow-md rounded text-2xl">
 //                 ThursDay
 //               </h2>
 //             </div>
-//             <div className="bg-[#FFA5BA] border-2 border-black flex justify-center items-center  w-[140px] h-[70px] shadow-md cursor-pointer ">
-//               <h2 className="font-semibold drop-shadow-md text-2xl">Tuesday</h2>
+//             <div className="bg-[#FFA5BA] border-2 border-black flex justify-center items-center  w-[140px] h-[70px] shadow-md rounded cursor-pointer ">
+//               <h2 className="font-semibold drop-shadow-md rounded text-2xl">Tuesday</h2>
 //             </div>
 //           </div>
 
 //           {new Array(6).fill(1).map((_, index) => (
 //             <div className="flex gap-2 justify-center items-center" key={index}>
-//               <div className="bg-[#AFCDE9]  border-2 border-black flex justify-center rounded items-center w-[140px] h-[70px] shadow-md cursor-pointer">
-//                 <h2 className="font-semibold drop-shadow-md text-xl">
+//               <div className="bg-[#AFCDE9]  border-2 border-black flex justify-center rounded items-center w-[140px] h-[70px] shadow-md rounded cursor-pointer">
+//                 <h2 className="font-semibold drop-shadow-md rounded text-xl">
 //                   7:00-8:30
 //                 </h2>
 //               </div>
-//               <div className="bg-transparent border-2 border-[#333333] flex justify-center items-center w-[140px] h-[70px] shadow-md cursor-pointer px-2">
+//               <div className="bg-transparent border-2 border-[#333333] flex justify-center items-center w-[140px] h-[70px] shadow-md rounded cursor-pointer px-2">
 //                 <div className="flex flex-col justify-center items-center w-full h-full overflow-hidden">
 //                   <p className="text-[15px] font-semibold truncate w-full overflow-hidden whitespace-nowrap">
 //                     Operating Systemhfhfghfhfgh
@@ -227,7 +225,7 @@ export function TimeTableContainer({ course, semester }: TimetableGridProps) {
 //                   </p>
 //                 </div>
 //               </div>
-//               <div className="bg-transparent border-2 border-[#333333] flex justify-center items-center w-[140px] h-[70px] shadow-md cursor-pointer px-2">
+//               <div className="bg-transparent border-2 border-[#333333] flex justify-center items-center w-[140px] h-[70px] shadow-md rounded cursor-pointer px-2">
 //                 <div className="flex flex-col justify-center items-center w-full h-full overflow-hidden">
 //                   <p className="text-[15px] font-semibold truncate w-full overflow-hidden whitespace-nowrap">
 //                     Operating Systemhfhfghfhfgh
@@ -240,7 +238,7 @@ export function TimeTableContainer({ course, semester }: TimetableGridProps) {
 //                   </p>
 //                 </div>
 //               </div>
-//               <div className="bg-transparent border-2 border-[#333333] flex justify-center items-center w-[140px] h-[70px] shadow-md cursor-pointer px-2">
+//               <div className="bg-transparent border-2 border-[#333333] flex justify-center items-center w-[140px] h-[70px] shadow-md rounded cursor-pointer px-2">
 //                 <div className="flex flex-col justify-center items-center w-full h-full overflow-hidden">
 //                   <p className="text-[15px] font-semibold truncate w-full overflow-hidden whitespace-nowrap">
 //                     Operating Systemhfhfghfhfgh
@@ -253,7 +251,7 @@ export function TimeTableContainer({ course, semester }: TimetableGridProps) {
 //                   </p>
 //                 </div>
 //               </div>
-//               <div className="bg-transparent border-2 border-[#333333] flex justify-center items-center w-[140px] h-[70px] shadow-md cursor-pointer px-2">
+//               <div className="bg-transparent border-2 border-[#333333] flex justify-center items-center w-[140px] h-[70px] shadow-md rounded cursor-pointer px-2">
 //                 <div className="flex flex-col justify-center items-center w-full h-full overflow-hidden">
 //                   <p className="text-[15px] font-semibold truncate w-full overflow-hidden whitespace-nowrap">
 //                     Operating Systemhfhfghfhfgh
@@ -266,7 +264,7 @@ export function TimeTableContainer({ course, semester }: TimetableGridProps) {
 //                   </p>
 //                 </div>
 //               </div>{" "}
-//               <div className="bg-transparent border-2 border-[#333333] flex justify-center items-center w-[140px] h-[70px] shadow-md cursor-pointer px-2">
+//               <div className="bg-transparent border-2 border-[#333333] flex justify-center items-center w-[140px] h-[70px] shadow-md rounded cursor-pointer px-2">
 //                 <div className="flex flex-col justify-center items-center w-full h-full overflow-hidden">
 //                   <p className="text-[15px] font-semibold truncate w-full overflow-hidden whitespace-nowrap">
 //                     Operating Systemhfhfghfhfgh

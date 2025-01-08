@@ -13,7 +13,7 @@ const Download: React.FC<DownloadProps> = ({ timeTableRef }) => {
     if (!element) return;
 
     const options = {
-      margin: [10, 10, 10, 10], // Set margin if needed
+      margin: [4,4,4,4], // Set margin if needed
       filename: "timetable.pdf",
       image: { type: "png", quality: 1 },
       html2canvas: { scale: 2 }, // Increase scale for better quality
