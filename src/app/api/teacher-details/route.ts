@@ -6,7 +6,6 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const teacherName = searchParams.get("teacher");
-    console.log("Received teacher name:", teacherName);
 
     if (!teacherName) {
       return NextResponse.json(
@@ -19,6 +18,7 @@ export async function GET(request: Request) {
 
     // Fetch all timetables
     const timetables = await Timetable.find();
+
     if (!timetables || timetables.length === 0) {
       return NextResponse.json(
         { error: "No timetables found" },
@@ -45,10 +45,7 @@ export async function GET(request: Request) {
         });
       });
     });
-
-    console.log("Teacher data:", teacherData);
-
-    if (teacherData.length === 0) {
+    if (teacherData.length == 0) {
       return NextResponse.json(
         { message: "No data found for the specified teacher" },
         { status: 404 }

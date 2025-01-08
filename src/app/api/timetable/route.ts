@@ -6,7 +6,7 @@ import Time from "@/models/Time";
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    console.log(searchParams);
+  
     const course = searchParams.get("course");
     const semester = searchParams.get("semester");
 
@@ -20,7 +20,7 @@ export async function GET(request: Request) {
     await dbConnect();
 
     const timetable = await MyTimetable.findOne({ course, semester });
-    console.log("Get TimeTable:", timetable);
+  
 
     return NextResponse.json({ timetable: timetable?.data || [] });
   } catch (error) {
@@ -76,18 +76,16 @@ export async function PUT(request: Request) {
       "sunday",
     ];
     await dbConnect();
-    console.log("Request data:", course, semester, day, time, teacher, subject);
-    console.log(time, course, semester, day, teacher, subject);
+ ;
     // Fetch all timetables that include this teacher in any slot
     const timetables = await MyTimetable.find({});
     const courseTimes = await Time.find();
     let myTime = courseTimes[0].slots[Number(time)];
-    console.log("All Time", myTime.start);
-    console.log("All Time", myTime.end);
+   
     let start = myTime.start;
     let end = myTime.end;
     let days = Days[Number(day)];
-    console.log("MyData", courseTimes);
+
     // Count the total number of lectures the teacher has on the specified day
     let totalLecturesOnDay = 0;
     let hasTimeConflict = false;
@@ -109,7 +107,7 @@ export async function PUT(request: Request) {
       });
     });
 
-    console.log("Total lectures on the specified day:", totalLecturesOnDay);
+   
 
     if (totalLecturesOnDay >= 5) {
       return NextResponse.json(
@@ -166,9 +164,9 @@ export async function PUT(request: Request) {
       teacherCourse: course,
       teacherSemester: semester,
     };
-    console.log("Updated Date", newData[0][0]);
+  
     timetable.data = newData;
-    console.log("fhewjhfdsf", timetable.data[0][0]);
+   
     await timetable.save();
 
     return NextResponse.json({ success: true });

@@ -78,7 +78,7 @@ export function TeacherSubjectForm({
       e.currentTarget.value = "";
     }
   };
-  console.log("My data",subject)
+  
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">

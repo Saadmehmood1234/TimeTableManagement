@@ -38,7 +38,7 @@ async function dbConnect() {
   }
 
   // Log the URI (for debugging)
-  console.log("MONGO_URI:", process.env.MONGO_URI);
+
 
   // Check if already connected
   if (isConnected.connect) {

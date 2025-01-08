@@ -1,8 +1,8 @@
+"use client";
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
-
 type TimetableData = {
-  day: number; // Ensure `day` is a number (0-6 for Sunday to Saturday)
+  day: number; 
   subject: string;
   time: { start: string; end: string };
   course: string;
@@ -11,15 +11,14 @@ type TimetableData = {
 
 type TeacherData = {
   teacherName: string;
-  teacherData: TimetableData[]; // Array of timetable data
+  teacherData: TimetableData[]; 
 };
 
-const TeacherTable = ({ selectedTeacher }: { selectedTeacher: string }) => {
+const TeacherTable = ({ selectedTeacher ,setSelectedTeacher}: { selectedTeacher: string,setSelectedTeacher:any }) => {
   const [timetable, setTimetable] = useState<TeacherData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [expandedDays, setExpandedDays] = useState<Record<string, boolean>>({});
-
   const Days: string[] = [
     "Monday",
     "Tuesday",
@@ -29,7 +28,6 @@ const TeacherTable = ({ selectedTeacher }: { selectedTeacher: string }) => {
     "Saturday",
     "Sunday",
   ];
-
   const getTeacherData = async () => {
     try {
       setIsLoading(true);
@@ -37,14 +35,11 @@ const TeacherTable = ({ selectedTeacher }: { selectedTeacher: string }) => {
       const response = await fetch(
         `/api/teacher-details?teacher=${selectedTeacher}`
       );
-
-      if (!response.ok) {
-        throw new Error("No timetable found for the selected teacher.");
-      }
-
       const data = await response.json();
+      setSelectedTeacher(data?.teacherName || selectedTeacher)
       setTimetable(data);
     } catch (error: any) {
+      console.log(error)
       setError(error.message);
     } finally {
       setIsLoading(false);
@@ -56,8 +51,8 @@ const TeacherTable = ({ selectedTeacher }: { selectedTeacher: string }) => {
       getTeacherData();
     }
   }, [selectedTeacher]);
-
-  const groupedByDay = timetable?.teacherData.reduce((acc, curr) => {
+  
+  const groupedByDay = timetable?.teacherData?.reduce((acc, curr) => {
     const day = Days[curr.day];
     if (!acc[day]) {
       acc[day] = [];
@@ -78,7 +73,7 @@ const TeacherTable = ({ selectedTeacher }: { selectedTeacher: string }) => {
       <Card className="p-2 shadow-lg rounded-lg sm:p-4 ">
         <h2 className="text-3xl font-bold text-gray-800 mb-6">
           Timetable for{" "}
-          <span className="text-[#4B3F72]">{selectedTeacher}</span>
+          <span className="text-[#4B3F72]">{timetable?.teacherName}</span>
         </h2>
         {isLoading ? (
           <div className="text-center text-gray-600">Loading...</div>

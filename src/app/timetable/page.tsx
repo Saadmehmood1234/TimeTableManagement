@@ -33,14 +33,13 @@ export default function TimetablePage() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const courseData = await response.json();
-      console.log(courseData);
-      console.log(courseData.data[0].course)
+     
       setCourse(courseData.data)
     } catch (error) {
       console.error("Error fetching course data:", error);
     }
   };
-  console.log(course)
+  
   useEffect(() => {
     getData();
   }, []);

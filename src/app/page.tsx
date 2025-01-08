@@ -12,6 +12,7 @@ import {
 import TimeTableContainer from "@/components/home/TimeTableContainer";
 import TeacherCard from "@/components/home/TeacherCard";
 import dynamic from "next/dynamic";
+import Loader from "@/components/Loader";
 
 function HomePage() {
   const [selectedCourse, setSelectedCourse] = useState<string>("bca");
@@ -19,47 +20,36 @@ function HomePage() {
   const [courses, setCourses] = useState<{ course: string }[]>([]);
   const [teachers, setTeachers] = useState<{ teacher: string }[]>([]);
   const timeTableRef = useRef<HTMLDivElement | null>(null);
-
-
-  // Fetch course data
-  const getCourses = async () => {
+  const [loading,setLoading] = useState<boolean>(false)
+  
+ 
+  const getTeacherAndCourse = async()=>{
     try {
-      const response = await fetch("/api/get-course");
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
+      setLoading(true);
+      const courseRes = await fetch("/api/get-course");
+      const teacherRes = await fetch("/api/get-teacher");
+      if(courseRes.ok){
+        const courseData = await courseRes.json();
+        setCourses(courseData.data || []);
       }
-      const courseData = await response.json();
-      setCourses(courseData.data || []);
+
+      if(teacherRes.ok){
+        const teacherData = await teacherRes.json();
+        setTeachers(teacherData.data || [])
+      }
     } catch (error) {
       console.error("Error fetching course data:", error);
+    }finally{
+      setLoading(false);
     }
-  };
-
+  }
   useEffect(() => {
-    getCourses();
-  }, []);
-  const getTeachers = async () => {
-    try {
-      const response = await fetch("/api/get-teacher");
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
-      const teacherData = await response.json();
-      console.log("My teacher data", teacherData.data);
-      setTeachers(teacherData.data || []);
-    } catch (error) {
-      console.error("Error fetching course data:", error);
-    }
-  };
-
-  useEffect(() => {
-    getTeachers();
+    getTeacherAndCourse();
   }, []);
 
   return (
     <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header Section */}
         <div className="flex justify-between items-center">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <h1 className="text-3xl font-bold">Timetable</h1>
@@ -99,7 +89,6 @@ function HomePage() {
           <Download timeTableRef={timeTableRef} />
         </div>
 
-        {/* Timetable Section */}
         {selectedCourse && selectedSemester && (
           <div ref={timeTableRef}>
             <TimeTableContainer
@@ -122,7 +111,9 @@ function HomePage() {
           className="flex gap-2 flex-wrap w-full justify-center items-center"
           id="/teachers"
         >
-          {teachers.map((teacher: any, index) => (
+          {
+          loading ? <Loader />:
+          teachers.map((teacher: any, index) => (
             <TeacherCard
               key={index}
               teacher={teacher.name}
