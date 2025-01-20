@@ -40,10 +40,11 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
       );
       const data = await response.json();
       setTimetable(data.timetable || Array(5).fill(Array(6).fill(null)));
-    } catch (error:any) {
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: error.message || "An error occurred while fetching the timetable",
+        description:
+          error.message || "An error occurred while fetching the timetable",
         variant: "destructive",
       });
     }
@@ -56,10 +57,11 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
       );
       const data = await response.json();
       setTeachers(data.teachers || []);
-    } catch (error:any) {
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: error.message || "An error occurred while fetching the timetable",
+        description:
+          error.message || "An error occurred while fetching the timetable",
         variant: "destructive",
       });
     }
@@ -72,10 +74,11 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
       );
       const data = await response.json();
       setTimeSlots(data.slots || []);
-    } catch (error:any) {
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: error.message || "An error occurred while fetching the timetable",
+        description:
+          error.message || "An error occurred while fetching the timetable",
         variant: "destructive",
       });
     }
@@ -114,14 +117,16 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
 
       if (!response.ok) {
         const errorResponse = await response.json();
-        const errorMessage = errorResponse.error || "An error occurred while deleting the timetable"; 
+        const errorMessage =
+          errorResponse.error ||
+          "An error occurred while deleting the timetable";
         toast({
           title: "Error",
           description: errorMessage,
           variant: "destructive",
         });
       }
-      
+
       const newTimetable = [...timetable];
       if (!Array.isArray(newTimetable[day])) {
         newTimetable[day] = Array(timeSlots.length).fill(null);
@@ -151,8 +156,9 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
       });
       return;
     }
-  
+
     try {
+      // Send the PUT request to save the timetable
       const response = await fetch("/api/timetable", {
         method: "PUT",
         headers: {
@@ -167,19 +173,23 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
           subject: selectedSubject,
         }),
       });
-  
+
       if (!response.ok) {
-        const errorResponse = await response.json(); 
-        const errorMessage = errorResponse.error || "An error occurred while saving the timetable"; 
+        const errorResponse = await response.json();
+        const errorMessage =
+          errorResponse.error || "An error occurred while saving the timetable";
         toast({
           title: "Error",
           description: errorMessage,
           variant: "destructive",
         });
+        return; // Don't proceed with DOM updates if the request failed
       }
 
+      // After the request is successful, fetch the timetable data and update the state
       await fetchTimetableData();
 
+      // Update the timetable in the state
       const newTimetable = [...timetable];
       if (!Array.isArray(newTimetable[editingCell!.day])) {
         newTimetable[editingCell!.day] = Array(timeSlots.length).fill(null);
@@ -188,25 +198,26 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
         teacher: selectedTeacher,
         subject: selectedSubject,
       };
-  
+
+      // Show success toast after the data is updated
       toast({
         title: "Success",
         description: "Timetable updated successfully",
       });
+
+      // Update the state to reflect the new timetable
       setTimetable(newTimetable);
       setEditingCell(null);
       setSelectedTeacher("");
       setSelectedSubject("");
-  
     } catch (error: any) {
       toast({
         title: "Error",
-        description: error.message,
+        description: error.message || "An unexpected error occurred",
         variant: "destructive",
       });
     }
   };
-  
 
   const handleTimeSlotSave = async (
     index: number,
@@ -230,14 +241,15 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
 
       if (!response.ok) {
         const errorResponse = await response.json();
-        const errorMessage = errorResponse.error || "An error occurred while saving  the timetable"; 
+        const errorMessage =
+          errorResponse.error ||
+          "An error occurred while saving  the timetable";
         toast({
           title: "Error",
           description: errorMessage,
           variant: "destructive",
         });
       }
-      
 
       const data = await response.json();
       setTimeSlots(data.slots);
@@ -271,7 +283,8 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
 
       if (!response.ok) {
         const errorResponse = await response.json();
-        const errorMessage = errorResponse.error || "An error occurred while adding the timetable"; 
+        const errorMessage =
+          errorResponse.error || "An error occurred while adding the timetable";
         toast({
           title: "Error",
           description: errorMessage,
@@ -315,7 +328,9 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
 
       if (!response.ok) {
         const errorResponse = await response.json();
-        const errorMessage = errorResponse.error || "An error occurred while deleting the timetable"; 
+        const errorMessage =
+          errorResponse.error ||
+          "An error occurred while deleting the timetable";
         toast({
           title: "Error",
           description: errorMessage,
