@@ -16,14 +16,8 @@ export async function DELETE(request: Request) {
     }
 
     await dbConnect();
-    const result = await CourseSubject.deleteOne({ course: courseToDelete });
-    if (result.deletedCount === 0) {
-        return NextResponse.json(
-          { message: "Course not found" },
-          { status: 404 }
-        );
-      }
-    const TimetableResponse=await Timetable.deleteMany({Course:courseToDelete})
+    // const mydata=await Timetable.find({course})
+    const TimetableResponse=await Timetable.deleteMany({course:courseToDelete})
     
     if (TimetableResponse.deletedCount === 0) {
         return NextResponse.json(
@@ -31,6 +25,13 @@ export async function DELETE(request: Request) {
           { status: 404 }
         );
       }
+      const result = await CourseSubject.deleteOne({ course: courseToDelete });
+      if (result.deletedCount === 0) {
+          return NextResponse.json(
+            { message: "Course not found" },
+            { status: 404 }
+          );
+        }
     return NextResponse.json(
       { message: "Course deleted successfully" },
       { status: 200 }

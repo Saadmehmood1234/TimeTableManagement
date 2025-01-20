@@ -94,7 +94,7 @@
 //           <table className="min-w-full table-auto text-gray-700">
 //             <thead className="bg-[#4B3F72] text-white">
 //               <tr>
-//                 <th className="py-2 px-4 text-left text-lg font-semibold">
+//                 <th className="py-2 px-4 text-center text-lg font-semibold">
 //                   Course
 //                 </th>
 //                 <th className="py-2 px-4 text-left text-lg font-semibold">
@@ -283,13 +283,13 @@ export function AddCourse() {
           <table className="min-w-full table-auto text-gray-700">
             <thead className="bg-[#4B3F72] text-white">
               <tr>
-                <th className="py-2 px-4 text-left text-lg font-semibold">
+                <th className="py-2 px-4 text-center text-lg font-semibold">
                   Course
                 </th>
-                <th className="py-2 px-4 text-left text-lg font-semibold">
+                <th className="py-2 px-4 text-center text-lg font-semibold">
                   Semester
                 </th>
-                <th className="py-2 px-4 text-left text-lg font-semibold">
+                <th className="py-2 px-4 text-center text-lg font-semibold">
                   Actions
                 </th>
               </tr>
@@ -297,9 +297,9 @@ export function AddCourse() {
             <tbody>
               {course.map((c, index) => (
                 <tr key={index} className="border-b hover:bg-gray-100">
-                  <td className="py-3 px-4">{c.course}</td>
-                  <td className="py-3 px-4">{c.semesters}</td>
-                  <td className="py-3 px-4">
+                  <td className="py-3 px-4 text-center">{c.course}</td>
+                  <td className="py-3 px-4 text-center">{c.semesters}</td>
+                  <td className="py-3 px-4 text-center">
                     <button
                       onClick={() => handleDelete(c.course)}
                       className="text-red-500 hover:text-red-700"
