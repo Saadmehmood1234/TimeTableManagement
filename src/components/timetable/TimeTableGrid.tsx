@@ -113,12 +113,15 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
       });
 
       if (!response.ok) {
+        const errorResponse = await response.json();
+        const errorMessage = errorResponse.error || "An error occurred while deleting the timetable"; 
         toast({
           title: "Error",
-          description:  "An error occurred while deleting the timetable",
+          description: errorMessage,
           variant: "destructive",
         });
       }
+      
       const newTimetable = [...timetable];
       if (!Array.isArray(newTimetable[day])) {
         newTimetable[day] = Array(timeSlots.length).fill(null);
@@ -148,7 +151,7 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
       });
       return;
     }
-
+  
     try {
       const response = await fetch("/api/timetable", {
         method: "PUT",
@@ -164,14 +167,18 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
           subject: selectedSubject,
         }),
       });
-
+  
       if (!response.ok) {
+        const errorResponse = await response.json(); 
+        const errorMessage = errorResponse.error || "An error occurred while saving the timetable"; 
         toast({
           title: "Error",
-          description: "An error occurred while saving the timetable",
+          description: errorMessage,
           variant: "destructive",
         });
       }
+
+      await fetchTimetableData();
 
       const newTimetable = [...timetable];
       if (!Array.isArray(newTimetable[editingCell!.day])) {
@@ -181,15 +188,16 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
         teacher: selectedTeacher,
         subject: selectedSubject,
       };
-      setTimetable(newTimetable);
-      setEditingCell(null);
-      setSelectedTeacher("");
-      setSelectedSubject("");
-
+  
       toast({
         title: "Success",
         description: "Timetable updated successfully",
       });
+      setTimetable(newTimetable);
+      setEditingCell(null);
+      setSelectedTeacher("");
+      setSelectedSubject("");
+  
     } catch (error: any) {
       toast({
         title: "Error",
@@ -198,6 +206,7 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
       });
     }
   };
+  
 
   const handleTimeSlotSave = async (
     index: number,
@@ -220,12 +229,15 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
       });
 
       if (!response.ok) {
+        const errorResponse = await response.json();
+        const errorMessage = errorResponse.error || "An error occurred while saving  the timetable"; 
         toast({
           title: "Error",
-          description:  "An error occurred while saving the timetable",
+          description: errorMessage,
           variant: "destructive",
         });
       }
+      
 
       const data = await response.json();
       setTimeSlots(data.slots);
@@ -258,9 +270,11 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
       });
 
       if (!response.ok) {
+        const errorResponse = await response.json();
+        const errorMessage = errorResponse.error || "An error occurred while adding the timetable"; 
         toast({
           title: "Error",
-          description: "An error occurred while saving the timetable",
+          description: errorMessage,
           variant: "destructive",
         });
       }
@@ -300,9 +314,11 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
       });
 
       if (!response.ok) {
+        const errorResponse = await response.json();
+        const errorMessage = errorResponse.error || "An error occurred while deleting the timetable"; 
         toast({
           title: "Error",
-          description: "An error occurred while deleting the timetable",
+          description: errorMessage,
           variant: "destructive",
         });
       }

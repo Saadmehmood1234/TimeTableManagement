@@ -47,7 +47,6 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    // Clear the slot
     timetable.data[day][time] = null;
     await timetable.save();
 
@@ -78,27 +77,21 @@ export async function PUT(request: Request) {
     ];
     await dbConnect();
  ;
-    // Fetch all timetables that include this teacher in any slot
     const timetables = await MyTimetable.find({});
     const courseTimes = await Time.find();
     let myTime = courseTimes[0].slots[Number(time)];
-   
     let start = myTime.start;
     let end = myTime.end;
     let days = Days[Number(day)];
-
-    // Count the total number of lectures the teacher has on the specified day
     let totalLecturesOnDay = 0;
     let hasTimeConflict = false;
 
     timetables.forEach((timetable: any) => {
       timetable.data.forEach((dayArray: any, dayIndex: any) => {
         if (dayIndex === day) {
-          // Check only the specified day index
           dayArray.forEach((slot: any, slotIndex: any) => {
             if (slot && slot.teacher === teacher) {
               totalLecturesOnDay++;
-              // Check if the teacher is already assigned at the same time slot on that day
               if (slotIndex === time) {
                 hasTimeConflict = true;
               }
@@ -129,19 +122,15 @@ export async function PUT(request: Request) {
         { status: 400 }
       );
     }
-
-    // Find or create a timetable for the current course and semester
     let timetable = await MyTimetable.findOne({ course, semester });
 
     if (!timetable) {
       timetable = new MyTimetable({
         course,
         semester,
-        data: Array(5).fill(Array(6).fill(null)), // Adjust number of days/slots as needed
+        data: Array(5).fill(Array(6).fill(null)), 
       });
     }
-
-    // Check for timing conflicts on the specific day in the current timetable
     const teacherConflict = timetable.data[day]?.[time]?.teacher === teacher;
 
     if (teacherConflict) {
@@ -150,11 +139,9 @@ export async function PUT(request: Request) {
         { status: 400 }
       );
     }
-
-    // Update timetable data for the specified day and time slot
     const newData = JSON.parse(JSON.stringify(timetable.data));
     if (!Array.isArray(newData[day])) {
-      newData[day] = Array(6).fill(null); // Adjust number of time slots as needed
+      newData[day] = Array(6).fill(null); 
     }
     newData[day][time] = {
       teacher,

@@ -15,7 +15,7 @@ import { TimetableGrid } from "@/components/timetable/TimeTableGrid";
 import { TeacherStats } from "@/components/timetable/TeacherStats";
 import { TeacherSubjectForm } from "@/components/timetable/TeacherSubjectForm";
 import { AddCourse } from "@/components/AddCourse";
-import { toast } from "react-hot-toast";
+import { useToast } from "@/hooks/use-toast";
 
 export default function TimetablePage() {
   const [selectedCourse, setSelectedCourse] = useState<string>("bca");
@@ -24,7 +24,7 @@ export default function TimetablePage() {
   const [course, setCourse] = useState([]);
   const [error, setError] = useState<string | null>(null); 
   const [loading, setLoading] = useState<boolean>(false);
-
+const {toast}=useToast();
   const getData = async () => {
     setLoading(true);
     setError(null); 
@@ -33,16 +33,28 @@ export default function TimetablePage() {
       const response = await fetch("/api/get-course");
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorResponse = await response.json();
+        const errorMessage = errorResponse.error; 
+        toast({
+          title: "Error",
+          description: errorMessage,
+          variant: "destructive",
+        });
       }
 
       const courseData = await response.json();
       setCourse(courseData.data);
-      toast.success("Courses loaded successfully!");
+      toast({
+        title: "Success",
+        description: "Data fetched successfully",
+      });
 
     } catch (error: any) {
-      setError(error.message || "An error occurred while fetching data.");
-      toast.error("Failed to load courses.");
+      toast({
+        title: "Error",
+        description: error,
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }

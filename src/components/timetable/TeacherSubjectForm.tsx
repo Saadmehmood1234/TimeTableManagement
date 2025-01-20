@@ -271,7 +271,6 @@ import { Plus, X, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useRouter } from "next/router";
 import { useToast } from "@/hooks/use-toast";
 import {
   Select,
@@ -305,12 +304,13 @@ export function TeacherSubjectForm({ course, semester }: TeacherSubjectFormProps
     try {
       const response = await fetch("/api/get-teacher");
       if (!response.ok) {
+        const errorResponse = await response.json();
+        const errorMessage = errorResponse.error || "An error occurred while";
         toast({
           title: "Error",
-          description: "Unable to fetch teachers. Please try again later.",
+          description: errorMessage,
           variant: "destructive",
         });
-        return;
       }
       const data = await response.json();
       setTeachers(data.data || []);
@@ -360,12 +360,13 @@ export function TeacherSubjectForm({ course, semester }: TeacherSubjectFormProps
       });
 
       if (!response.ok) {
+        const errorResponse = await response.json();
+        const errorMessage = errorResponse.error;
         toast({
           title: "Error",
-          description: "Failed to delete teacher. Please try again.",
+          description: errorMessage,
           variant: "destructive",
         });
-        return;
       }
 
       toast({
@@ -415,13 +416,13 @@ export function TeacherSubjectForm({ course, semester }: TeacherSubjectFormProps
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorResponse = await response.json();
+        const errorMessage = errorResponse.error || "An error occurred";
         toast({
           title: "Error",
-          description: "Failed to add teacher and subject.",
+          description: errorMessage,
           variant: "destructive",
         });
-        return;
       }
 
       toast({

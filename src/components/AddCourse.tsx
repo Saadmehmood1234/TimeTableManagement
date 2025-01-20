@@ -64,9 +64,14 @@ export function AddCourse() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to add course and semester");
+        const errorResponse = await response.json();
+        const errorMessage = errorResponse.error;
+        toast({
+          title: "Error",
+          description: errorMessage,
+          variant: "destructive",
+        });
       }
-
       toast({
         title: "Success",
         description: "Course and semester added successfully.",
@@ -74,7 +79,7 @@ export function AddCourse() {
 
       setCourseName("");
       setSemester("");
-      fetchCourse(); // Refetch courses to update UI
+      fetchCourse();
     } catch (error:any) {
       console.error("Error adding course and semester:", error);
       toast({
@@ -94,15 +99,19 @@ export function AddCourse() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to delete course");
+        const errorResponse = await response.json();
+        const errorMessage = errorResponse.error || "An error occurred while deleting the course";
+        toast({
+          title: "Error",
+          description: errorMessage,
+          variant: "destructive",
+        });
       }
 
       toast({
         title: "Success",
         description: "Course deleted successfully.",
       });
-
-      // Update the UI by refetching the data
       fetchCourse();
     } catch (error:any) {
       console.error("Error deleting course:", error);
@@ -117,7 +126,6 @@ export function AddCourse() {
   return (
     <section className="flex w-full justify-center items-center py-12">
       <div className="flex max-w-4xl gap-4 w-full max-sm:flex-col max-sm:justify-center max-sm:items-center justify-between items-start">
-        {/* Table Section */}
         <div className="w-full sm:w-1/2 overflow-x-auto bg-white rounded-2xl shadow-lg p-4">
           <table className="min-w-full table-auto text-gray-700">
             <thead className="bg-[#4B3F72] text-white">

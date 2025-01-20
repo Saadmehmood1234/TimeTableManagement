@@ -40,9 +40,11 @@ export function TeacherStats() {
       );
       
       if (!response.ok) {
+        const errorResponse = await response.json();
+        const errorMessage = errorResponse.error || "An error occurred";
         toast({
           title: "Error",
-          description: "An error occurred while fetching the teacher data.",
+          description: errorMessage,
           variant: "destructive",
         });
       }
@@ -50,10 +52,10 @@ export function TeacherStats() {
       const data = await response.json();
       setFreeTeachers(data.freeTeachers || []);
       setBusyTeachers(data.busyTeachers || []);
-    } catch (error) {
+    } catch (error:any) {
       toast({
         title: "Error",
-        description: "An error occurred while fetching the teacher data.",
+        description:error.message,
         variant: "destructive",
       });
       setFreeTeachers([]);

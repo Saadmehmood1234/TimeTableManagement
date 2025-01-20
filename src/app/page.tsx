@@ -42,7 +42,7 @@ function HomePage() {
     } catch (error:any) {
       toast({
         title: "Error",
-        description: error.message || "An error occurred while deleting the slot.",
+        description: error.message || "Network or server error occurred.",
         variant: "destructive",
       });
     }finally{
