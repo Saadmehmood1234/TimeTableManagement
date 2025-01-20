@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useSearchParams } from "next/navigation";
 
 import TimeTableContainer from "@/components/home/TimeTableContainer";
 import TeacherCard from "@/components/home/TeacherCard";
@@ -20,9 +21,8 @@ function HomePage() {
   const [courses, setCourses] = useState<{ course: string }[]>([]);
   const [teachers, setTeachers] = useState<{ teacher: string }[]>([]);
   const timeTableRef = useRef<HTMLDivElement | null>(null);
-  const [loading,setLoading] = useState<boolean>(false)
-  
- 
+  const [loading,setLoading] = useState<boolean>(false);
+  const searchParams = useSearchParams();
   const getTeacherAndCourse = async()=>{
     try {
       setLoading(true);
@@ -38,7 +38,7 @@ function HomePage() {
         setTeachers(teacherData.data || [])
       }
     } catch (error) {
-      console.error("Error fetching course data:", error);
+      console.log("Error fetching course data:", error);
     }finally{
       setLoading(false);
     }
@@ -47,8 +47,20 @@ function HomePage() {
     getTeacherAndCourse();
   }, []);
 
+
+  useEffect(()=>{
+    const course = searchParams.get("course")?.toUpperCase();
+    const sem = searchParams.get("sem");
+    if(course){
+      setSelectedCourse(course);
+    }
+    if(sem){
+      setSelectedSemester(sem);
+    }
+  },[])
+
   return (
-    <div className="min-h-screen p-6">
+    <div className="min-h-screen p-6 ">
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="flex justify-between items-center">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
