@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -14,32 +15,36 @@ import { TimetableGrid } from "@/components/timetable/TimeTableGrid";
 import { TeacherStats } from "@/components/timetable/TeacherStats";
 import { TeacherSubjectForm } from "@/components/timetable/TeacherSubjectForm";
 import { AddCourse } from "@/components/AddCourse";
+import { toast } from "react-hot-toast";
+
 export default function TimetablePage() {
-  const [selectedCourse, setSelectedCourse] = useState<string>("");
-  const [selectedSemester, setSelectedSemester] = useState<string>("");
+  const [selectedCourse, setSelectedCourse] = useState<string>("bca");
+  const [selectedSemester, setSelectedSemester] = useState<string>("5");
   const [viewCourse, setViewCourse] = useState(false);
   const [course, setCourse] = useState([]);
-  // Set default values on component mount
-  useEffect(() => {
-    setSelectedCourse("bca");
-    setSelectedSemester("5");
-  }, []);
+  const [error, setError] = useState<string | null>(null); 
+  const [loading, setLoading] = useState<boolean>(false);
 
   const getData = async () => {
+    setLoading(true);
+    setError(null); 
+
     try {
       const response = await fetch("/api/get-course");
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const courseData = await response.json();
-      console.log(courseData);
-      console.log(courseData.data[0].course);
-      setCourse(courseData.data);
-     
-      setCourse(courseData.data)
 
-    } catch (error) {
-      console.error("Error fetching course data:", error);
+      const courseData = await response.json();
+      setCourse(courseData.data);
+      toast.success("Courses loaded successfully!");
+
+    } catch (error: any) {
+      setError(error.message || "An error occurred while fetching data.");
+      toast.error("Failed to load courses.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -48,7 +53,7 @@ export default function TimetablePage() {
   }, []);
 
   return (
-    <div className="min-h-screen  p-6">
+    <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <h1 className="text-3xl font-bold">Timetable Management</h1>
@@ -59,13 +64,11 @@ export default function TimetablePage() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="bca">BCA</SelectItem>
-                {course.map((c: any, index: any) => {
-                  return (
-                    <SelectItem key={index} value={c.course}>
-                      {c.course}
-                    </SelectItem>
-                  );
-                })}
+                {course.map((c: any, index: number) => (
+                  <SelectItem key={index} value={c.course}>
+                    {c.course}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
             <Select
@@ -83,8 +86,7 @@ export default function TimetablePage() {
                 ))}
               </SelectContent>
             </Select>
-            <div className=" gap-4  flex justify-center text-white items-center  border-gray-300">
-              {/* <Link href='/teacher'><Button className="bg-[#4B3F72]">All Courses</Button></Link> */}
+            <div className="gap-4 flex justify-center text-white items-center border-gray-300">
               <Button
                 className="bg-[#4B3F72] max-md:w-full hover:bg-[#7160a7]"
                 onClick={() => setViewCourse(!viewCourse)}
@@ -94,8 +96,18 @@ export default function TimetablePage() {
             </div>
           </div>
         </div>
+
+        {error && (
+          <div className="p-4 bg-red-100 text-red-800 border border-red-400 rounded">
+            {error}
+          </div>
+        )}
+
+        {loading && (
+          <div className="text-center text-gray-600">Loading courses...</div>
+        )}
         <div>{viewCourse && <AddCourse />}</div>
-        {selectedCourse && selectedSemester && (
+        {selectedCourse && selectedSemester && !loading && !error && (
           <div className="flex flex-col gap-2">
             <div className="lg:col-span-2">
               <Card className="p-6 bg-[#d6a4af]">
@@ -105,7 +117,7 @@ export default function TimetablePage() {
                 />
               </Card>
             </div>
-            <div className="grid md:grid-cols-2 grid-cols-1 gap-10 ">
+            <div className="grid md:grid-cols-2 grid-cols-1 gap-10">
               <div>
                 <Card className="p-6 w-full">
                   <TeacherSubjectForm

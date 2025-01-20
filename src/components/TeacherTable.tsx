@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
 type TimetableData = {
   day: number; 
   subject: string;
@@ -15,6 +16,7 @@ type TeacherData = {
 };
 
 const TeacherTable = ({ selectedTeacher ,setSelectedTeacher}: { selectedTeacher: string,setSelectedTeacher:any }) => {
+  const {toast}=useToast();
   const [timetable, setTimetable] = useState<TeacherData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -38,10 +40,13 @@ const TeacherTable = ({ selectedTeacher ,setSelectedTeacher}: { selectedTeacher:
       const data = await response.json();
       setSelectedTeacher(data?.teacherName || selectedTeacher)
       setTimetable(data);
-    } catch (error: any) {
-      console.log(error)
-      setError(error.message);
-    } finally {
+    }catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "An error occurred while deleting the slot.",
+        variant: "destructive", 
+      });
+    }finally {
       setIsLoading(false);
     }
   };

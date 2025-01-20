@@ -5,7 +5,6 @@ const Footer = () => {
   return (
     <div className="bg-[#4B3F72] text-white py-8 mt-10 p-9 max-sm:p-5">
       <div className="w-full max-w-[1200px] m-auto flex flex-col gap-8">
-        {/* Top Section - College Info and Links */}
         <div className="flex flex-wrap justify-between gap-8">
           <div className="w-full sm:w-1/3">
             <h3 className="text-xl font-semibold mb-4">About DBIT</h3>

@@ -34,8 +34,7 @@ export function TimeSlotEditor({
   const [isEditing, setIsEditing] = useState(false);
   const [start, setStart] = useState(timeSlot.start);
   const [end, setEnd] = useState(timeSlot.end);
-  const [isModalOpen, setIsModalOpen] = useState(false); // For controlling the modal
-
+  const [isModalOpen, setIsModalOpen] = useState(false); 
   const handleSave = () => {
     onSave(index, start, end);
     setIsEditing(false);
@@ -43,7 +42,7 @@ export function TimeSlotEditor({
 
   const handleDelete = () => {
     onDelete(index);
-    setIsModalOpen(false); // Close modal after deleting
+    setIsModalOpen(false); 
   };
 
   if (isEditing) {
@@ -83,8 +82,6 @@ export function TimeSlotEditor({
         <Button variant="ghost" className="p-0 hover:bg-[#4B3F72]" onClick={() => setIsEditing(true)}>
           <Edit2 className="h-4 w-4" />
         </Button>
-
-        {/* Alert Dialog for delete confirmation */}
         <AlertDialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <AlertDialogTrigger asChild>
             <Button variant="ghost" className="p-0 hover:bg-[#4B3F72]" onClick={() => setIsModalOpen(true)}>

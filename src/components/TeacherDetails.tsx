@@ -11,7 +11,9 @@ import {
 } from "@/components/ui/select";
 import TeacherTable from "./TeacherTable";
 import {usePathname} from "next/navigation"
+import { useToast } from "@/hooks/use-toast";
 export default function TeacherDetails() {
+  const {toast}=useToast()
   const [selectedTeacher, setSelectedTeacher] = useState<string>("all");
   const [teacher, setTeacher] = useState<any[]>([]);
   const [loading,setLoading]= useState<boolean>(false);
@@ -24,8 +26,12 @@ export default function TeacherDetails() {
         const teacherData = await response.json();
         setTeacher(teacherData.data);
       }  
-    } catch (error) {
-      console.error("Error fetching teacher data:", error);
+    } catch (error:any) {
+      toast({
+        title: "Error",
+        description: error.message || "An error occurred while deleting the slot.",
+        variant: "destructive",
+      });
     }finally{
       setLoading(false);
     }
@@ -41,11 +47,10 @@ export default function TeacherDetails() {
       setSelectedTeacher(names.at(-1)!)
     }
   },[pathname])
-  console.log(selectedTeacher,"selected")
+
   return (
     <div className="min-h-screen">
       <div className="w-full flex flex-col gap-4 sm:p-10">
-        {/* Header Section */}
         <div className="flex justify-between w-full items-center p-3">
           <h1 className="text-4xl font-extrabold bg-clip-text ">
             Teacher Details
@@ -67,8 +72,6 @@ export default function TeacherDetails() {
             
           </div>
         </div>
-
-        {/* Timetable or Teacher Details */}
         <div className="">
           {selectedTeacher !== "all" && (
             <TeacherTable selectedTeacher={selectedTeacher} setSelectedTeacher={setSelectedTeacher} />

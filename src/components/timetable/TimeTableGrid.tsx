@@ -10,9 +10,6 @@ import {
 import { TimetableSlot } from "@/components/timetable-slot";
 import { TimeSlotEditor } from "@/components/time-slot-editor";
 import { AddTimeSlot } from "../add-time-slote";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-
 interface TimetableGridProps {
   course: string;
   semester: string;
@@ -43,8 +40,12 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
       );
       const data = await response.json();
       setTimetable(data.timetable || Array(5).fill(Array(6).fill(null)));
-    } catch (error) {
-      console.error("Error fetching timetable:", error);
+    } catch (error:any) {
+      toast({
+        title: "Error",
+        description: error.message || "An error occurred while fetching the timetable",
+        variant: "destructive",
+      });
     }
   };
 
@@ -55,8 +56,12 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
       );
       const data = await response.json();
       setTeachers(data.teachers || []);
-    } catch (error) {
-      console.error("Error fetching teachers and subjects:", error);
+    } catch (error:any) {
+      toast({
+        title: "Error",
+        description: error.message || "An error occurred while fetching the timetable",
+        variant: "destructive",
+      });
     }
   };
 
@@ -67,8 +72,12 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
       );
       const data = await response.json();
       setTimeSlots(data.slots || []);
-    } catch (error) {
-      console.error("Error fetching time slots:", error);
+    } catch (error:any) {
+      toast({
+        title: "Error",
+        description: error.message || "An error occurred while fetching the timetable",
+        variant: "destructive",
+      });
     }
   };
 
@@ -104,11 +113,12 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
       });
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message);
+        toast({
+          title: "Error",
+          description:  "An error occurred while deleting the timetable",
+          variant: "destructive",
+        });
       }
-
-      // Update local state
       const newTimetable = [...timetable];
       if (!Array.isArray(newTimetable[day])) {
         newTimetable[day] = Array(timeSlots.length).fill(null);
@@ -156,11 +166,13 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
       });
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message);
+        toast({
+          title: "Error",
+          description: "An error occurred while saving the timetable",
+          variant: "destructive",
+        });
       }
 
-      // Update local state
       const newTimetable = [...timetable];
       if (!Array.isArray(newTimetable[editingCell!.day])) {
         newTimetable[editingCell!.day] = Array(timeSlots.length).fill(null);
@@ -208,7 +220,11 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to update time slot");
+        toast({
+          title: "Error",
+          description:  "An error occurred while saving the timetable",
+          variant: "destructive",
+        });
       }
 
       const data = await response.json();
@@ -242,12 +258,15 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to add time slot");
+        toast({
+          title: "Error",
+          description: "An error occurred while saving the timetable",
+          variant: "destructive",
+        });
       }
 
       const data = await response.json();
       setTimeSlots(data.slots);
-      // Expand timetable array to accommodate new time slot
       setTimetable((prev) => prev.map((row) => [...row, null]));
       toast({
         title: "Success",
@@ -281,14 +300,14 @@ export function TimetableGrid({ course, semester }: TimetableGridProps) {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to delete time slot");
+        toast({
+          title: "Error",
+          description: "An error occurred while deleting the timetable",
+          variant: "destructive",
+        });
       }
-
-      // Update the timeSlots state by removing the specified slot
       const newTimeSlots = timeSlots.filter((_, i) => i !== index);
       setTimeSlots(newTimeSlots);
-
-      // Update the timetable state by removing the column for the deleted slot
       const newTimetable = timetable.map((row) =>
         row.filter((_, i) => i !== index)
       );

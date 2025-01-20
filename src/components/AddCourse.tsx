@@ -1,172 +1,3 @@
-// "use client";
-
-// import { useEffect, useState } from "react";
-// import { Plus } from "lucide-react";
-// import { Button } from "@/components/ui/button";
-// import { Input } from "@/components/ui/input";
-// import { Label } from "@/components/ui/label";
-// import { useToast } from "@/hooks/use-toast";
-// import { getCourse } from "@/actions/action.data";
-// import { div } from "framer-motion/client";
-
-// interface AddCourseProps {
-//   course: string;
-//   semester: string;
-// }
-// interface Course {
-//   course: string; // or any specific type you expect for 'course'
-//   semesters: string[]; // assuming 'semesters' is an array of strings, adjust if needed
-// }
-
-// export function AddCourse() {
-//   const { toast } = useToast();
-//   const [courseName, setCourseName] = useState("");
-//   const [semester, setSemester] = useState("");
-//   const [isSubmitting, setIsSubmitting] = useState(false);
-//   const [course, setCourse] = useState<Course[]>([]); // Initialize as an empty array of Course type
-
-//   async function fetchCourse() {
-//     try {
-//       const courseData = await getCourse();
-//       setCourse(courseData);
-//       console.log(courseData);
-//     } catch (error) {
-//       console.error("Error fetching course data:", error);
-//     }
-//   }
-
-//   useEffect(() => {
-//     fetchCourse();
-//   }, []);
-//   const handleSubmit = async (e: React.FormEvent) => {
-//     e.preventDefault();
-//     if (!courseName || !semester) {
-//       toast({
-//         title: "Error",
-//         description: "Course  and semester are required",
-//         variant: "destructive",
-//       });
-//       return;
-//     }
-
-//     setIsSubmitting(true);
-//     try {
-//       const response = await fetch("/api/course-semester", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           courseName,
-//           semester,
-//         }),
-//       });
-
-//       if (!response.ok) {
-//         throw new Error("Failed to add course and semester");
-//       }
-
-//       toast({
-//         title: "Success",
-//         description: "course and semester added successfully",
-//       });
-
-//       // Reset form
-//       setCourseName("");
-//       setSemester("");
-//       fetchCourse();
-//     } catch (error) {
-//       toast({
-//         title: "Error",
-//         description: "Failed to add course and semestew",
-//         variant: "destructive",
-//       });
-//     } finally {
-//       setIsSubmitting(false);
-//     }
-//   };
-//   console.log("Last Data", course);
-//   return (
-//     <section className="flex w-full justify-center items-center py-12">
-//       <div className="flex max-w-4xl gap-4 w-full max-sm:flex-col max-sm:justify-center max-sm:items-center justify-between items-start">
-//         {/* Table Section */}
-//         <div className="w-full sm:w-1/2 overflow-x-auto bg-white rounded-2xl shadow-lg p-4">
-//           <table className="min-w-full table-auto text-gray-700">
-//             <thead className="bg-[#4B3F72] text-white">
-//               <tr>
-//                 <th className="py-2 px-4 text-center text-lg font-semibold">
-//                   Course
-//                 </th>
-//                 <th className="py-2 px-4 text-left text-lg font-semibold">
-//                   Semester
-//                 </th>
-//               </tr>
-//             </thead>
-//             <tbody>
-//               {course.map((c, index) => (
-//                 <tr key={index} className="border-b hover:bg-gray-100">
-//                   <td className="py-3 px-4">{c.course}</td>
-//                   <td className="py-3 px-4">{c.semesters}</td>
-//                 </tr>
-//               ))}
-//             </tbody>
-//           </table>
-//         </div>
-
-//         {/* Form Section */}
-//         <form
-//           onSubmit={handleSubmit}
-//           className="w-full sm:w-1/2 space-y-6 bg-white p-6 rounded-2xl shadow-lg"
-//         >
-//           <div className="space-y-4">
-//             <Label
-//               htmlFor="courseName"
-//               className="text-xl font-semibold text-gray-700"
-//             >
-//               Course
-//             </Label>
-//             <Input
-//               id="courseName"
-//               className="bg-white border-2 border-gray-300 rounded-lg shadow-sm w-full py-3 px-4 focus:outline-none focus:ring-2 focus:ring-[#4B3F72] focus:border-[#4B3F72]"
-//               value={courseName}
-//               onChange={(e) => setCourseName(e.target.value)}
-//               placeholder="Enter course name"
-//               required
-//               disabled={isSubmitting}
-//             />
-//           </div>
-
-//           <div className="space-y-4">
-//             <Label
-//               htmlFor="semester"
-//               className="text-xl font-semibold text-gray-700"
-//             >
-//               Semester
-//             </Label>
-//             <Input
-//               id="semester"
-//               className="bg-white border-2 border-gray-300 rounded-lg shadow-sm w-full py-3 px-4 focus:outline-none focus:ring-2 focus:ring-[#4B3F72] focus:border-[#4B3F72]"
-//               value={semester}
-//               onChange={(e) => setSemester(e.target.value)}
-//               placeholder="Enter semester"
-//               required
-//               disabled={isSubmitting}
-//             />
-//           </div>
-
-//           <Button
-//             type="submit"
-//             className="w-full bg-[#4B3F72] hover:bg-[#7160a7] text-white font-semibold py-3 rounded-lg shadow-md focus:outline-none disabled:opacity-50"
-//             disabled={isSubmitting}
-//           >
-//             <Plus className="w-5 h-5 mr-2" />
-//             {isSubmitting ? "Adding..." : "Add course & semester"}
-//           </Button>
-//         </form>
-//       </div>
-//     </section>
-//   );
-// }
 "use client";
 
 import { useEffect, useState } from "react";
@@ -195,6 +26,11 @@ export function AddCourse() {
       setCourse(courseData);
     } catch (error) {
       console.error("Error fetching course data:", error);
+      toast({
+        title: "Error",
+        description: "Unable to fetch course data. Please try again later.",
+        variant: "destructive",
+      });
     }
   }
 
@@ -204,10 +40,11 @@ export function AddCourse() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!courseName || !semester) {
       toast({
         title: "Error",
-        description: "Course and semester are required",
+        description: "Course and semester are required.",
         variant: "destructive",
       });
       return;
@@ -232,16 +69,17 @@ export function AddCourse() {
 
       toast({
         title: "Success",
-        description: "Course and semester added successfully",
+        description: "Course and semester added successfully.",
       });
 
       setCourseName("");
       setSemester("");
-      fetchCourse();
-    } catch (error) {
+      fetchCourse(); // Refetch courses to update UI
+    } catch (error:any) {
+      console.error("Error adding course and semester:", error);
       toast({
         title: "Error",
-        description: "Failed to add course and semester",
+        description: error.message || "Failed to add course and semester.",
         variant: "destructive",
       });
     } finally {
@@ -261,15 +99,16 @@ export function AddCourse() {
 
       toast({
         title: "Success",
-        description: "Course deleted successfully",
+        description: "Course deleted successfully.",
       });
 
       // Update the UI by refetching the data
       fetchCourse();
-    } catch (error) {
+    } catch (error:any) {
+      console.error("Error deleting course:", error);
       toast({
         title: "Error",
-        description: "Failed to delete course",
+        description: error.message || "Failed to delete course.",
         variant: "destructive",
       });
     }

@@ -2,8 +2,6 @@
 import { FileDown } from "lucide-react";
 import { MutableRefObject, useCallback, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-
-// Define props for the component
 interface DownloadProps {
   timeTableRef: MutableRefObject<HTMLDivElement | null>;
 }
@@ -17,17 +15,17 @@ const Download: React.FC<DownloadProps> = ({ timeTableRef }) => {
     if (typeof window !== "undefined" && element) {
       const html2pdf = require("html2pdf.js");
       const options = {
-        margin: [4, 4, 4, 4], // Set margin if needed
+        margin: [4, 4, 4, 4], 
         filename: "timetable.pdf",
         image: { type: "png", quality: 1 },
-        html2canvas: { scale: 2 }, // Increase scale for better quality
+        html2canvas: { scale: 2 }, 
         jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
       };
 
       html2pdf()
-        .from(element) // Convert the content from the ref
-        .set(options) // Apply settings
-        .save(); // Download the PDF
+        .from(element)
+        .set(options) 
+        .save();
     }
 
     setLoading(false);

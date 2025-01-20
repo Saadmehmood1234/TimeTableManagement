@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import { useToast } from "@/hooks/use-toast";
 import Download from "@/components/Download";
 import {
   Select,
@@ -23,6 +24,7 @@ function HomePage() {
   const timeTableRef = useRef<HTMLDivElement | null>(null);
   const [loading,setLoading] = useState<boolean>(false);
   const searchParams = useSearchParams();
+  const {toast}=useToast();
   const getTeacherAndCourse = async()=>{
     try {
       setLoading(true);
@@ -37,8 +39,12 @@ function HomePage() {
         const teacherData = await teacherRes.json();
         setTeachers(teacherData.data || [])
       }
-    } catch (error) {
-      console.log("Error fetching course data:", error);
+    } catch (error:any) {
+      toast({
+        title: "Error",
+        description: error.message || "An error occurred while deleting the slot.",
+        variant: "destructive",
+      });
     }finally{
       setLoading(false);
     }

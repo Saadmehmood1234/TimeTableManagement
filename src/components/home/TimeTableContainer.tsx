@@ -2,7 +2,9 @@
 import { useState, useEffect } from "react";
 import { TimetableCell, TimeSlot, DAYS } from "@/lib/types";
 import dynamic from "next/dynamic";
+import { useToast } from "@/hooks/use-toast";
 import Loader from "../Loader";
+import toast from "react-hot-toast";
 interface TimetableGridProps {
   course: string;
   semester: string;
@@ -11,7 +13,7 @@ function TimeTableContainer({ course, semester }: TimetableGridProps) {
   const [timetable, setTimetable] = useState<(TimetableCell | null)[][]>([]);
   const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-
+  const { toast } = useToast();
   const timeTableData = async () => {
     try {
       setLoading(true);
@@ -27,9 +29,12 @@ function TimeTableContainer({ course, semester }: TimetableGridProps) {
         timeTableData.timetable || Array(5).fill(Array(6).fill(null))
       );
       setTimeSlots(slotData.slots || []);
-
-    } catch (error) {
-      console.error("Error fetching time slots:", error);
+    } catch (error:any) {
+      toast({
+        title: "Error",
+        description: error.message || "An error occurred while fetching the data.",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }

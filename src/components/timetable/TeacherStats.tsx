@@ -1,6 +1,6 @@
 
 "use client";
-
+import { useToast } from "@/hooks/use-toast";
 import { useState, useEffect } from "react";
 import {
   Select,
@@ -27,7 +27,7 @@ export function TeacherStats() {
   const [freeTeachers, setFreeTeachers] = useState<string[]>([]);
   const [busyTeachers, setBusyTeachers] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-
+  const { toast } = useToast();
   useEffect(() => {
     fetchTeacherAvailability();
   }, [selectedDay, selectedTime]);
@@ -40,14 +40,22 @@ export function TeacherStats() {
       );
       
       if (!response.ok) {
-        throw new Error('Failed to fetch teacher availability');
+        toast({
+          title: "Error",
+          description: "An error occurred while fetching the teacher data.",
+          variant: "destructive",
+        });
       }
       
       const data = await response.json();
       setFreeTeachers(data.freeTeachers || []);
       setBusyTeachers(data.busyTeachers || []);
     } catch (error) {
-      console.error("Error fetching teacher availability:", error);
+      toast({
+        title: "Error",
+        description: "An error occurred while fetching the teacher data.",
+        variant: "destructive",
+      });
       setFreeTeachers([]);
       setBusyTeachers([]);
     } finally {
