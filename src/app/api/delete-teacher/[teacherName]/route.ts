@@ -6,8 +6,10 @@ import Timetable from "@/models/Timetable";
 export async function DELETE(request: Request) {
   try {
     const url = new URL(request.url);
-    const teacherName = url.pathname.split("/").pop(); // Extract teacher name from URL
-
+    const teacherName = decodeURIComponent(url.pathname.split("/").pop()!); // Decode the teacher name
+    
+    console.log(teacherName); // This should now log "Poonam Arora" instead of "Poonam%20Arora"
+    
     if (!teacherName) {
       return NextResponse.json(
         { error: "Teacher name is required" },
@@ -15,43 +17,56 @@ export async function DELETE(request: Request) {
       );
     }
 
-    await dbConnect();
-
-    // Fetch all timetables
+    await dbConnect(); // Connect to the database
     const timetables = await Timetable.find({});
 
-    let teacherFound = false;
+    let teacherFoundInTimetable = false;
 
-    // Iterate over each timetable
+    // Iterate through all timetables
     for (let k = 0; k < timetables.length; k++) {
       const timetable = timetables[k];
 
-      // Iterate over each row and column in the 2D `data` array
+      // Skip empty timetables
+      if (timetable.data.length === 0) {
+        continue;
+      }
+
+      // Iterate through the timetable slots
       for (let i = 0; i < timetable.data.length; i++) {
         for (let j = 0; j < timetable.data[i].length; j++) {
           const classData = timetable.data[i][j];
-
-          // Check if the teacher matches
           if (classData && classData.teacher === teacherName) {
-            teacherFound = true;
-
-            // Remove the teacher by setting the entry to `null`
-            timetable.data[i][j] = null;
+            teacherFoundInTimetable = true;
+            timetable.data[i][j] = null; // Remove the teacher from the timetable slot
           }
         }
       }
 
-      // Save the updated timetable back to the database
+      // Save the updated timetable
       await timetable.save();
     }
 
-    if (!teacherFound) {
+    // Now check if the teacher was found in the timetable and then delete from Teacher collection
+    if (teacherFoundInTimetable) {
+      const teacherResponse = await Teacher.deleteOne({ name: teacherName });
+
+      if (teacherResponse.deletedCount === 0) {
+        // If no teacher is found to delete, return not found response
+        return NextResponse.json(
+          { message: "Teacher not found in the Teacher collection" },
+          { status: 404 }
+        );
+      }
+
       return NextResponse.json(
-        { message: "No timetables found for the specified teacher" },
-        { status: 404 }
+        {
+          message: "Teacher and associated timetable entries deleted successfully",
+        },
+        { status: 200 }
       );
     }
 
+    // If teacher is not found in any timetable, delete the teacher anyway (if exists in the Teacher collection)
     const teacherResponse = await Teacher.deleteOne({ name: teacherName });
 
     if (teacherResponse.deletedCount === 0) {
@@ -62,12 +77,10 @@ export async function DELETE(request: Request) {
     }
 
     return NextResponse.json(
-      {
-        message:
-          "Teacher and associated timetable entries deleted successfully",
-      },
+      { message: "Teacher deleted successfully" },
       { status: 200 }
     );
+
   } catch (error) {
     console.error("Error deleting teacher and timetables:", error);
     return NextResponse.json(
