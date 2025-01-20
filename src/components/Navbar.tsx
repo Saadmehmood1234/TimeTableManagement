@@ -13,7 +13,7 @@ const Navbar = async() => {
       </div>
       <div className="flex justify-center items-center gap-5 max-sm:gap-2 text-[#e2e2e2]">
       <Link href={"/"}>Home</Link>
-        <Link href={"/teacher"}>Teachers</Link>
+        <Link href={"/teacher/all"}>Teachers</Link>
         <Link href={"/statistic"}>Statistics</Link>
       
         {

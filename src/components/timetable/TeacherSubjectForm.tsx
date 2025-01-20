@@ -304,7 +304,11 @@ export function TeacherSubjectForm({
       e.currentTarget.value = "";
     }
   };
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> b54e9a72382b473553f3db9bcf7890d456776bbc
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-2">

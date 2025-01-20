@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Plus, Eye } from "lucide-react";
+import {Eye } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -10,50 +10,38 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import TeacherTable from "./TeacherTable";
+import {usePathname} from "next/navigation"
 export default function TeacherDetails() {
-  const [selectedTeacher, setSelectedTeacher] = useState<string>("All");
+  const [selectedTeacher, setSelectedTeacher] = useState<string>("all");
   const [teacher, setTeacher] = useState<any[]>([]);
-  const [timetable, setTimetable] = useState<any | null>(null);
+  const [loading,setLoading]= useState<boolean>(false);
+  const pathname = usePathname();
   const getData = async () => {
+    setLoading(true);
     try {
       const response = await fetch("/api/get-teacher");
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      const teacherData = await response.json();
-      setTeacher(teacherData.data);
+      if(response.ok){
+        const teacherData = await response.json();
+        setTeacher(teacherData.data);
+      }  
     } catch (error) {
       console.error("Error fetching teacher data:", error);
+    }finally{
+      setLoading(false);
     }
   };
-
-  // Simulated API to fetch timetable for the selected teacher
-  const getTeacherTimetable = (teacherName: string) => {
-    if (teacherName !== "All") {
-      const dummyTimetable = [
-        { day: "Monday", subject: "Math", time: "9:00 AM - 11:00 AM", course: "BCA", semester: "1" },
-        { day: "Tuesday", subject: "Physics", time: "10:00 AM - 12:00 PM", course: "BCA", semester: "1" },
-        { day: "Wednesday", subject: "Chemistry", time: "11:00 AM - 1:00 PM", course: "BCA", semester: "1" },
-        { day: "Thursday", subject: "English", time: "2:00 PM - 4:00 PM", course: "BCA", semester: "2" },
-        { day: "Friday", subject: "Computer Science", time: "1:00 PM - 3:00 PM", course: "BCA", semester: "2" },
-      ];
-      setTimetable(dummyTimetable);
-    } else {
-      setTimetable(null);
-    }
-  };
-
   useEffect(() => {
     getData();
   }, []);
 
-  // Fetch timetable when the selected teacher changes
-  useEffect(() => {
-    if (selectedTeacher !== "All") {
-      getTeacherTimetable(selectedTeacher);
-    } else {
-      setTimetable(null);
-    }
-  }, [selectedTeacher]);
 
+  useEffect(()=>{
+    const names = pathname.split("/")
+    if(names.length>1){
+      setSelectedTeacher(names.at(-1)!)
+    }
+  },[pathname])
+  console.log(selectedTeacher,"selected")
   return (
     <div className="min-h-screen">
       <div className="w-full flex flex-col gap-4 sm:p-10">
@@ -68,7 +56,7 @@ export default function TeacherDetails() {
                 <SelectValue placeholder="Select Teacher" />
               </SelectTrigger>
               <SelectContent className="">
-                <SelectItem value="All">All</SelectItem>
+                <SelectItem value="all">All</SelectItem>
                 {teacher.map((c: any, index: number) => (
                   <SelectItem key={index} value={c.name}>
                     {c.name}
@@ -82,12 +70,12 @@ export default function TeacherDetails() {
 
         {/* Timetable or Teacher Details */}
         <div className="">
-          {selectedTeacher !== "All" && timetable && (
-            <TeacherTable selectedTeacher={selectedTeacher}  />
+          {selectedTeacher !== "all" && (
+            <TeacherTable selectedTeacher={selectedTeacher} setSelectedTeacher={setSelectedTeacher} />
           )}
         </div>
 
-        {selectedTeacher === "All" && (
+        {selectedTeacher === "all" && (
           <div className="overflow-x-auto bg-white rounded-lg ">
             <table className="w-full border-collapse text-left gap-3">
               <thead>

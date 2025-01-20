@@ -13,6 +13,7 @@ const timetableSchema = new mongoose.Schema({
     type: [
       [
         {
+          _id:String,
           teacher: String,
           subject: String,
           day: String,
