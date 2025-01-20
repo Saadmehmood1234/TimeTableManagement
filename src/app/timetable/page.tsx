@@ -23,46 +23,46 @@ export default function TimetablePage() {
   // Set default values on component mount
   useEffect(() => {
     setSelectedCourse("bca");
-    setSelectedSemester("5");  
+    setSelectedSemester("5");
   }, []);
-
 
   const getData = async () => {
     try {
-      const response = await fetch("/api/get-course"); 
+      const response = await fetch("/api/get-course");
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const courseData = await response.json();
       console.log(courseData);
-      console.log(courseData.data[0].course)
-      setCourse(courseData.data)
+      console.log(courseData.data[0].course);
+      setCourse(courseData.data);
     } catch (error) {
       console.error("Error fetching course data:", error);
     }
   };
-  console.log(course)
+  console.log(course);
   useEffect(() => {
     getData();
   }, []);
-  
 
   return (
     <div className="min-h-screen  p-6">
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <h1 className="text-3xl font-bold">Timetable Management</h1>
-          <div className="flex w-full max-sm:flex-col gap-4">
+          <div className="flex w-full max-md:flex-col gap-4">
             <Select value={selectedCourse} onValueChange={setSelectedCourse}>
-              <SelectTrigger className="w-[180px] max-sm:w-full bg-white text-black">
+              <SelectTrigger className="w-[180px] max-md:w-full bg-white text-black">
                 <SelectValue placeholder="Select Course" />
               </SelectTrigger>
               <SelectContent>
-                  <SelectItem value="bca">BCA</SelectItem>
-                {course.map((c:any,index:any)=>{
-                  return(
-                    <SelectItem key={index} value={c.course}>{c.course}</SelectItem> 
-                  )
+                <SelectItem value="bca">BCA</SelectItem>
+                {course.map((c: any, index: any) => {
+                  return (
+                    <SelectItem key={index} value={c.course}>
+                      {c.course}
+                    </SelectItem>
+                  );
                 })}
               </SelectContent>
             </Select>
@@ -70,7 +70,7 @@ export default function TimetablePage() {
               value={selectedSemester}
               onValueChange={setSelectedSemester}
             >
-              <SelectTrigger className="w-[180px] max-sm:w-full bg-white text-black">
+              <SelectTrigger className="w-[180px] max-md:w-full bg-white text-black">
                 <SelectValue placeholder="Select Semester" />
               </SelectTrigger>
               <SelectContent>
@@ -83,7 +83,10 @@ export default function TimetablePage() {
             </Select>
             <div className=" gap-4  flex justify-center text-white items-center  border-gray-300">
               {/* <Link href='/teacher'><Button className="bg-[#4B3F72]">All Courses</Button></Link> */}
-              <Button className="bg-[#4B3F72] hover:bg-[#7160a7]"  onClick={() => setViewCourse(!viewCourse)}>
+              <Button
+                className="bg-[#4B3F72] max-md:w-full hover:bg-[#7160a7]"
+                onClick={() => setViewCourse(!viewCourse)}
+              >
                 Add Course <Plus className="w-4 h-4 mr-2" />
               </Button>
             </div>

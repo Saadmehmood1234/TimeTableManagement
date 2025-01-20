@@ -1,17 +1,9 @@
 import mongoose from 'mongoose';
 
 const teacherSubjectSchema = new mongoose.Schema({
-  course: {
+  teachers: {
     type: String,
-    required: true,
   },
-  semester: {
-    type: String,
-    required: true,
-  },
-  teachers: [{
-    type: String,
-  }],
   subjects: [{
     type: String,
   }],

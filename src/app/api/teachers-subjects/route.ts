@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/utils/db-connect";
-import Teacher from "@/models/Teacher";
 import CourseSubject from "@/models/CourseSubject";
+import Teacher from "@/models/Teacher";
 
 export async function GET(request: Request) {
   try {
@@ -17,11 +17,7 @@ export async function GET(request: Request) {
     }
 
     await dbConnect();
-
-    // Get all teachers with their subjects
     const teachers = await Teacher.find().select("name subjects");
-
-    // Get subjects for the specific course and semester
     const courseSubjects = await CourseSubject.findOne({ course, semester });
 
     return NextResponse.json({
@@ -40,10 +36,11 @@ export async function GET(request: Request) {
   }
 }
 
+
 export async function POST(request: Request) {
   try {
-    const { course, semester, designation, teacherName, subject } =
-      await request.json();
+    const { designation, teacherName, subject,id } = await request.json();
+    console.log("Updated Teacher Data",teacherName, subject, designation,id);
 
     if (!teacherName || !subject) {
       return NextResponse.json(
@@ -54,13 +51,14 @@ export async function POST(request: Request) {
 
     await dbConnect();
 
-    // Add or update teacher
+    // Find or create a teacher document
     const teacher = await Teacher.findOneAndUpdate(
-      { name: teacherName, designation: designation },
+      { name: teacherName },
       {
-        $addToSet: { subjects: subject },
+        $set: { designation },
+        $addToSet: { subjects: subject }, 
       },
-      { upsert: true, new: true }
+      { upsert: true, new: true } 
     );
 
     return NextResponse.json({
@@ -68,10 +66,11 @@ export async function POST(request: Request) {
       data: teacher,
     });
   } catch (error) {
-    console.error("Error adding teacher and subject:", error);
+    console.error("Error updating teacher and subject:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
     );
   }
 }
+

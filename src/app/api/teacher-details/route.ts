@@ -6,7 +6,6 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const teacherName = searchParams.get("teacher");
-    console.log("Received teacher name:", teacherName);
 
     if (!teacherName) {
       return NextResponse.json(

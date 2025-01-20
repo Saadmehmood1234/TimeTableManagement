@@ -66,8 +66,9 @@ export async function PUT(request: Request) {
   try {
     const { course, semester, day, time, teacher, subject } =
       await request.json();
+      console.log("TimeTable Data:",course,semester,day,time,teacher,subject)
     const Days = [
-      "monday",
+      "monday",  
       "tuesday",
       "wednesday",
       "thursday",

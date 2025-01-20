@@ -5,7 +5,7 @@ export async function GET(request: Request) {
   try {
     await dbConnect();
     const course = await Teacher.find();
-
+    console.log("Saad", course);
     return NextResponse.json({
       success: true,
       data: course,
