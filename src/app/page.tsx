@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useSearchParams ,useRouter} from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 import TimeTableContainer from "@/components/home/TimeTableContainer";
 import TeacherCard from "@/components/home/TeacherCard";
@@ -22,61 +22,48 @@ function HomePage() {
   const [courses, setCourses] = useState<{ course: string }[]>([]);
   const [teachers, setTeachers] = useState<{ teacher: string }[]>([]);
   const timeTableRef = useRef<HTMLDivElement | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading,setLoading] = useState<boolean>(false);
   const searchParams = useSearchParams();
-<<<<<<< HEAD
-  const { toast } = useToast();
-  const getTeacherAndCourse = async () => {
-=======
-  const router = useRouter();
   const {toast}=useToast();
   const getTeacherAndCourse = async()=>{
->>>>>>> 6a877496e07351ea12057b85ed65ac87ad3edf2e
     try {
       setLoading(true);
       const courseRes = await fetch("/api/get-course");
       const teacherRes = await fetch("/api/get-teacher");
-      if (courseRes.ok) {
+      if(courseRes.ok){
         const courseData = await courseRes.json();
         setCourses(courseData.data || []);
       }
 
-      if (teacherRes.ok) {
+      if(teacherRes.ok){
         const teacherData = await teacherRes.json();
-        setTeachers(teacherData.data || []);
+        setTeachers(teacherData.data || [])
       }
-    } catch (error: any) {
+    } catch (error:any) {
       toast({
         title: "Error",
         description: error.message || "Network or server error occurred.",
         variant: "destructive",
       });
-    } finally {
+    }finally{
       setLoading(false);
     }
-  };
+  }
   useEffect(() => {
     getTeacherAndCourse();
   }, []);
 
-  useEffect(() => {
+
+  useEffect(()=>{
     const course = searchParams.get("course")?.toUpperCase();
     const sem = searchParams.get("sem");
-    if (course) {
+    if(course){
       setSelectedCourse(course);
     }
-    if (sem) {
+    if(sem){
       setSelectedSemester(sem);
     }
-<<<<<<< HEAD
-  }, []);
-=======
-  },[searchParams])
-
-  useEffect(() => {
-    router.push(`/?course=${selectedCourse?.toUpperCase()}&sem=${selectedSemester}`);
-  }, [selectedCourse, selectedSemester]);
->>>>>>> 6a877496e07351ea12057b85ed65ac87ad3edf2e
+  },[])
 
   return (
     <div className="min-h-screen p-6 ">
@@ -91,7 +78,7 @@ function HomePage() {
                   <SelectValue placeholder="Select Course" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="BCA">BCA</SelectItem>
+                  <SelectItem value="bca">BCA</SelectItem>
                   {courses.map((c, index) => (
                     <SelectItem key={index} value={c.course}>
                       {c.course}
@@ -142,17 +129,15 @@ function HomePage() {
           className="flex gap-2 flex-wrap w-full justify-center items-center"
           id="/teachers"
         >
-          {loading ? (
-            <Loader />
-          ) : (
-            teachers.map((teacher: any, index) => (
-              <TeacherCard
-                key={index}
-                teacher={teacher.name}
-                designation={teacher.designation}
-              />
-            ))
-          )}
+          {
+          loading ? <Loader />:
+          teachers.map((teacher: any, index) => (
+            <TeacherCard
+              key={index}
+              teacher={teacher.name}
+              designation={teacher.designation}
+            />
+          ))}
         </div>
       </div>
     </div>
