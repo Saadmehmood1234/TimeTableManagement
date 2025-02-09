@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams ,useRouter} from "next/navigation";
 
 import TimeTableContainer from "@/components/home/TimeTableContainer";
 import TeacherCard from "@/components/home/TeacherCard";
@@ -24,8 +24,14 @@ function HomePage() {
   const timeTableRef = useRef<HTMLDivElement | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const searchParams = useSearchParams();
+<<<<<<< HEAD
   const { toast } = useToast();
   const getTeacherAndCourse = async () => {
+=======
+  const router = useRouter();
+  const {toast}=useToast();
+  const getTeacherAndCourse = async()=>{
+>>>>>>> 6a877496e07351ea12057b85ed65ac87ad3edf2e
     try {
       setLoading(true);
       const courseRes = await fetch("/api/get-course");
@@ -62,7 +68,15 @@ function HomePage() {
     if (sem) {
       setSelectedSemester(sem);
     }
+<<<<<<< HEAD
   }, []);
+=======
+  },[searchParams])
+
+  useEffect(() => {
+    router.push(`/?course=${selectedCourse?.toUpperCase()}&sem=${selectedSemester}`);
+  }, [selectedCourse, selectedSemester]);
+>>>>>>> 6a877496e07351ea12057b85ed65ac87ad3edf2e
 
   return (
     <div className="min-h-screen p-6 ">
@@ -77,7 +91,7 @@ function HomePage() {
                   <SelectValue placeholder="Select Course" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="bca">BCA</SelectItem>
+                  <SelectItem value="BCA">BCA</SelectItem>
                   {courses.map((c, index) => (
                     <SelectItem key={index} value={c.course}>
                       {c.course}
