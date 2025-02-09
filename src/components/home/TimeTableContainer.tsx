@@ -49,7 +49,7 @@ function TimeTableContainer({ course, semester }: TimetableGridProps) {
       {loading ? (
         <Loader />
       ) : (
-        <div className="p-2   w-full ">
+        <div className="p-12 bg-white rounded-3xl  w-full ">
           <h1 className="text-3xl font-bold text-center text-black pb-4">
             {course.charAt(0).toUpperCase() + course.slice(1).toLowerCase()} -{" "}
             {semester} Timetable

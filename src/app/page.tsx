@@ -22,48 +22,47 @@ function HomePage() {
   const [courses, setCourses] = useState<{ course: string }[]>([]);
   const [teachers, setTeachers] = useState<{ teacher: string }[]>([]);
   const timeTableRef = useRef<HTMLDivElement | null>(null);
-  const [loading,setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const searchParams = useSearchParams();
-  const {toast}=useToast();
-  const getTeacherAndCourse = async()=>{
+  const { toast } = useToast();
+  const getTeacherAndCourse = async () => {
     try {
       setLoading(true);
       const courseRes = await fetch("/api/get-course");
       const teacherRes = await fetch("/api/get-teacher");
-      if(courseRes.ok){
+      if (courseRes.ok) {
         const courseData = await courseRes.json();
         setCourses(courseData.data || []);
       }
 
-      if(teacherRes.ok){
+      if (teacherRes.ok) {
         const teacherData = await teacherRes.json();
-        setTeachers(teacherData.data || [])
+        setTeachers(teacherData.data || []);
       }
-    } catch (error:any) {
+    } catch (error: any) {
       toast({
         title: "Error",
         description: error.message || "Network or server error occurred.",
         variant: "destructive",
       });
-    }finally{
+    } finally {
       setLoading(false);
     }
-  }
+  };
   useEffect(() => {
     getTeacherAndCourse();
   }, []);
 
-
-  useEffect(()=>{
+  useEffect(() => {
     const course = searchParams.get("course")?.toUpperCase();
     const sem = searchParams.get("sem");
-    if(course){
+    if (course) {
       setSelectedCourse(course);
     }
-    if(sem){
+    if (sem) {
       setSelectedSemester(sem);
     }
-  },[])
+  }, []);
 
   return (
     <div className="min-h-screen p-6 ">
@@ -129,15 +128,17 @@ function HomePage() {
           className="flex gap-2 flex-wrap w-full justify-center items-center"
           id="/teachers"
         >
-          {
-          loading ? <Loader />:
-          teachers.map((teacher: any, index) => (
-            <TeacherCard
-              key={index}
-              teacher={teacher.name}
-              designation={teacher.designation}
-            />
-          ))}
+          {loading ? (
+            <Loader />
+          ) : (
+            teachers.map((teacher: any, index) => (
+              <TeacherCard
+                key={index}
+                teacher={teacher.name}
+                designation={teacher.designation}
+              />
+            ))
+          )}
         </div>
       </div>
     </div>
