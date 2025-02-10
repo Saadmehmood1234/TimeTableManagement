@@ -36,11 +36,10 @@ export async function GET(request: Request) {
   }
 }
 
-
 export async function POST(request: Request) {
   try {
-    const { designation, teacherName, subject,id } = await request.json();
-    console.log("Updated Teacher Data",teacherName, subject, designation,id);
+    const { designation, teacherName, subject, id } = await request.json();
+    console.log("Updated Teacher Data:", teacherName, subject, designation, id);
 
     if (!teacherName || !subject) {
       return NextResponse.json(
@@ -48,25 +47,22 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
-
     await dbConnect();
-
-    // Find or create a teacher document
+    const query = id ? { _id: id } : { name: teacherName };
     const teacher = await Teacher.findOneAndUpdate(
-      { name: teacherName },
+      query,
       {
-        $set: { designation },
-        $addToSet: { subjects: subject }, 
+        $set: { name: teacherName, designation },
+        $addToSet: { subjects: subject },
       },
-      { upsert: true, new: true } 
+      { upsert: true, new: true, runValidators: true }
     );
-
     return NextResponse.json({
       success: true,
       data: teacher,
     });
   } catch (error) {
-    console.error("Error updating teacher and subject:", error);
+    console.error("Error updating/adding teacher:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
